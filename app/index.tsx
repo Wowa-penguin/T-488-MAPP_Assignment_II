@@ -1,18 +1,43 @@
-import React, { useState } from 'react';
-import { View, StyleSheet } from 'react-native';
 import Search from '@/components/search';
 import User from '@/components/user';
 import { Contact } from '@/models/contact';
+import * as fileShit from '@/util/fileManager';
+import React, { useEffect, useState } from 'react';
+import { Button, StyleSheet, Text, View } from 'react-native';
+
+const seedContacts: Contact[] = [
+    { name: 'Guðný', phone: '5812345' },
+    { name: 'Heimir', phone: '5812345' },
+    { name: 'Bjarki', phone: '5812345' },
+    { name: 'Vita', phone: '5812345' },
+];
 
 export default function Index() {
     const [search, setSearch] = useState('');
+    const [isLoading, setIsLoading] = useState(true);
+    const [contacts, setContacts] = useState<Contact[]>([]);
 
-    const contacts: Contact[] = [
-        { name: 'Guðný' },
-        { name: 'Heimir' },
-        { name: 'Bjarki' },
-        { name: 'Vita' },
-    ];
+    useEffect(() => {
+        const init = async () => {
+            try {
+                // fileShit.deleteContactsDirectory()
+                const allUsers = await fileShit.getAllContacts();
+                setContacts(allUsers);
+            } catch (err) {
+                console.error(err);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        init();
+    }, []);
+
+    const handleCreateUsers = () => {
+        for (const c of seedContacts) {
+            fileShit.createContactFile(c.name, c.phone);
+        }
+    };
 
     const filteredContacts = contacts.filter((c) =>
         c.name.toLowerCase().includes(search.toLowerCase())
@@ -20,8 +45,20 @@ export default function Index() {
 
     return (
         <View style={styles.container}>
-            <Search value={search} onChange={setSearch} />
-            <User contacts={filteredContacts} />
+            {isLoading ? (
+                <>
+                    <Text>Is Loading </Text>
+                </>
+            ) : (
+                <>
+                    <Search value={search} onChange={setSearch} />
+                    <User contacts={filteredContacts} />
+                    <Button
+                        title="Create users temp"
+                        onPress={handleCreateUsers}
+                    />
+                </>
+            )}
         </View>
     );
 }

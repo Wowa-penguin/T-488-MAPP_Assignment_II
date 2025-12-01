@@ -1,101 +1,101 @@
 import { Directory, File, Paths } from 'expo-file-system';
 
-const createUserDataFile = (name: string) => {
-    try {
-        //* 1. Create /Documents/data/
-        const dataDir = new Directory(Paths.document, 'data');
+export interface Contact {
+    id: string;
+    name: string;
+    phone: string;
+    fileName: string;
+    uri: string;
+}
 
-        if (!dataDir.exists) {
-            dataDir.create();
-            console.log('Created directory:', dataDir.uri);
-        } else {
-            console.log('Directory already exists:', dataDir.uri);
-        }
+const slugify = (name: string) =>
+    name
+        .trim()
+        .toLowerCase()
+        .replace(/\s+/g, '-')
+        .replace(/[^a-z0-9\-]/g, '');
 
-        //* 2. Create JSON files
-        const file = new File(dataDir, name);
-        if (!file.exists) {
-            file.create();
-            file.write(JSON.stringify({ name: name }));
+const generateRandomId = () => {
+    return `${Date.now().toString(36)}-${Math.random()
+        .toString(36)
+        .slice(2, 10)}`;
+};
 
-            console.log('Created file:', file.uri);
-        } else {
-            console.log('File already exists:', file.uri);
-        }
-    } catch (err) {
-        console.error(err);
+const createContactFile = (name: string, phone: string): Contact => {
+    const contactsDir = new Directory(Paths.document, 'contacts');
+
+    if (!contactsDir.exists) {
+        contactsDir.create();
     }
-};
 
-const chackDir = () => {
-    //? temp
-    const dataDir = new Directory(Paths.document, 'data');
+    //? fromat <name-of-contact>-<uuid>.json
+    const id = generateRandomId();
+    const slug = slugify(name);
+    const fileName = `${slug}-${id}.json`;
 
-    dataDir.list().forEach((file) => {
-        console.log(file.name);
-    });
-};
+    const file = new File(contactsDir, fileName);
 
-const readDataFile = async () => {
-    try {
-        const dataDir = new Directory(Paths.document, 'data');
-
-        dataDir.list().forEach(async (fileName) => {
-            const file = new File(dataDir, fileName.name);
-
-            if (!file.exists) {
-                console.log("File doesn't exist:", file.uri);
-                return;
-            }
-            const text = file.text(); // string
-            const json = JSON.parse(await text);
-
-            console.log('Parsed JSON:', json);
-        });
-    } catch (err) {
-        console.error(err);
+    if (!file.exists) {
+        const payload = { id, name, phone };
+        file.create();
+        file.write(JSON.stringify(payload, null, 2));
     }
+
+    return {
+        id,
+        name,
+        phone,
+        fileName,
+        uri: file.uri,
+    };
 };
 
-const deleteAll = async () => {
-    //? temp
-    try {
-        const dataDir = new Directory(Paths.document, 'data');
+const getAllContacts = async (): Promise<Contact[]> => {
+    const contactsDir = new Directory(Paths.document, 'contacts');
 
-        dataDir.list().forEach(async (fileName) => {
-            const file = new File(dataDir, fileName.name);
-
-            if (file.exists) {
-                file.delete();
-            }
-        });
-    } catch (err) {
-        console.error(err);
-    }
-};
-
-const getAllUsers = async () => {
-    try {
-        const dataDir = new Directory(Paths.document, 'data');
-        const users: any[] = [];
-
-        for (const entry of dataDir.list()) {
-            if (!(entry instanceof File)) continue;
-
-            if (!entry.exists) {
-                console.log("File doesn't exist:", entry.uri);
-                continue;
-            }
-
-            const text = entry.text();
-            const json = JSON.parse(await text);
-            users.push(json);
-        }
-        return users;
-    } catch (err) {
-        console.error(err);
+    if (!contactsDir.exists) {
         return [];
     }
+
+    const contacts: Contact[] = [];
+
+    for (const entry of contactsDir.list()) {
+        if (!(entry instanceof File)) continue;
+        if (!entry.name.endsWith('.json')) continue;
+        if (!entry.exists) continue;
+
+        try {
+            const text = entry.text();
+            const data = JSON.parse(await text);
+
+            const contact: Contact = {
+                id: data.id ?? '',
+                name: data.name ?? '',
+                phone: data.phone ?? '',
+                fileName: entry.name,
+                uri: entry.uri,
+            };
+
+            contacts.push(contact);
+        } catch (e) {
+            console.warn('Failed to parse contact file:', entry.name, e);
+        }
+    }
+
+    return contacts;
 };
 
-export { chackDir, createUserDataFile, deleteAll, getAllUsers, readDataFile };
+const deleteContactsDirectory = () => {
+    const contactsDir = new Directory(Paths.document, 'contacts');
+
+    if (!contactsDir.exists) {
+        console.log('Contacts directory does not exist');
+        return;
+    }
+
+    contactsDir.delete(); // deletes folder + all contents
+
+    console.log('Contacts directory deleted.');
+};
+
+export { createContactFile, deleteContactsDirectory, getAllContacts };
