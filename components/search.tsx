@@ -11,7 +11,7 @@ export default function Search({ value, onChange }: SearchProps) {
     <View style={styles.container}>
       <TextInput
         placeholder="Search"
-        placeholderTextColor="pink"
+        placeholderTextColor="#8e8e93"
         value={value}
         onChangeText={onChange}
         style={styles.input}
@@ -23,7 +23,7 @@ export default function Search({ value, onChange }: SearchProps) {
 const styles = StyleSheet.create({
   container: {
     width: "100%",
-    backgroundColor: "skyblue",
+    backgroundColor: '#F2F2F7',
     borderRadius: 20,
     paddingHorizontal: 14,
     paddingVertical: 8,
