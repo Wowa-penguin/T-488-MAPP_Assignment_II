@@ -7,11 +7,12 @@ import {
     Text,
     TouchableOpacity,
     View,
+    Image,
 } from 'react-native';
-import { Contact } from '../models/contact.js';
+import { FileContact } from '../models/contact';
 
 type UserProps = {
-    contacts: Contact[];
+    contacts: FileContact[];
 };
 
 export default function User({ contacts }: UserProps) {
@@ -43,16 +44,21 @@ export default function User({ contacts }: UserProps) {
                                     params: {
                                         name: c.name,
                                         phone: c.phone,
+                                        fileName: c.fileName,
                                     },
                                 })
                             }
                             onLongPress={() => handleCall(c.phone)}
                         >
                             <View style={styles.avatar}>
-                                <Text style={styles.avatarInitial}>
+                                {c.photo ? (
+                                    <Image source={{ uri: c.photo }} style={styles.avatarImage} />
+                                ) : (
+                                    <Text style={styles.avatarInitial}>
                                     {c.name.charAt(0).toUpperCase()}
-                                </Text>
-                            </View>
+                                    </Text>
+                                )}
+                                </View>
                             <Text style={styles.name}>{c.name}</Text>
                         </TouchableOpacity>
                     ))}
@@ -99,12 +105,12 @@ const ALPHABET = [
     'Ö',
 ];
 
-function groupContacts(contacts: Contact[]) {
+function groupContacts(contacts: FileContact[]) {
     const sorted = [...contacts].sort((a, b) =>
         a.name.localeCompare(b.name, 'is', { sensitivity: 'base' })
     );
 
-    const groups: Record<string, Contact[]> = {};
+    const groups: Record<string, FileContact[]> = {};
 
     sorted.forEach((contact) => {
         let letter = contact.name.charAt(0).toUpperCase();
@@ -154,4 +160,10 @@ const styles = StyleSheet.create({
     name: {
         fontSize: 16,
     },
+    avatarImage: {
+        width: 40,
+        height: 40,
+        borderRadius: 20,
+    },
+    
 });

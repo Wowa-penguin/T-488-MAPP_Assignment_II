@@ -1,7 +1,7 @@
-import { Contact } from '@/models/contact';
+import { FileContact } from '@/models/contact';
 import * as ExpoContacts from 'expo-contacts';
 
-const GetContacts = async (): Promise<Contact[]> => {
+const GetContacts = async (): Promise<FileContact[]> => {
     const { status } = await ExpoContacts.requestPermissionsAsync();
 
     if (status !== 'granted') {
@@ -10,13 +10,18 @@ const GetContacts = async (): Promise<Contact[]> => {
     }
 
     const { data } = await ExpoContacts.getContactsAsync({
-        fields: [ExpoContacts.Fields.Name, ExpoContacts.Fields.PhoneNumbers],
+        fields: [
+            ExpoContacts.Fields.Name,
+            ExpoContacts.Fields.PhoneNumbers,
+            ExpoContacts.Fields.Image,
+        ],
     });
 
-    const retContactInfo: Contact[] = [];
+    const retContactInfo: FileContact[] = [];
 
     data.forEach((contact) => {
         let phoneNumber = '';
+        let photoUri = '';
 
         if (
             contact.phoneNumbers &&
@@ -24,11 +29,18 @@ const GetContacts = async (): Promise<Contact[]> => {
         ) {
             phoneNumber = contact.phoneNumbers[0].digits!;
         }
+        if (contact.image && typeof contact.image.uri !== 'undefined') {
+            photoUri = contact.image?.uri;
+        }
 
         if (contact.name && phoneNumber) {
             retContactInfo.push({
                 name: contact.name,
                 phone: phoneNumber,
+                photo: photoUri,
+                id: '',
+                fileName: '',
+                uri: '',
             });
         }
     });
