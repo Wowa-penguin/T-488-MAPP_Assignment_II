@@ -1,12 +1,5 @@
+import { FileContact } from '@/models/contact';
 import { Directory, File, Paths } from 'expo-file-system';
-
-export interface Contact {
-    id: string;
-    name: string;
-    phone: string;
-    fileName: string;
-    uri: string;
-}
 
 const slugify = (name: string) =>
     name
@@ -21,7 +14,7 @@ const generateRandomId = () => {
         .slice(2, 10)}`;
 };
 
-const createContactFile = (name: string, phone: string): Contact => {
+const createContactFile = (name: string, phone: string): FileContact => {
     const contactsDir = new Directory(Paths.document, 'contacts');
 
     if (!contactsDir.exists) {
@@ -50,14 +43,14 @@ const createContactFile = (name: string, phone: string): Contact => {
     };
 };
 
-const getAllContacts = async (): Promise<Contact[]> => {
+const getAllContacts = async (): Promise<FileContact[]> => {
     const contactsDir = new Directory(Paths.document, 'contacts');
 
     if (!contactsDir.exists) {
         return [];
     }
 
-    const contacts: Contact[] = [];
+    const contacts: FileContact[] = [];
 
     for (const entry of contactsDir.list()) {
         if (!(entry instanceof File)) continue;
@@ -68,7 +61,7 @@ const getAllContacts = async (): Promise<Contact[]> => {
             const text = entry.text();
             const data = JSON.parse(await text);
 
-            const contact: Contact = {
+            const contact: FileContact = {
                 id: data.id ?? '',
                 name: data.name ?? '',
                 phone: data.phone ?? '',
