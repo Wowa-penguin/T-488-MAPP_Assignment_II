@@ -1,7 +1,7 @@
 import Search from '@/components/search';
 import User from '@/components/user';
 import { Contact } from '@/models/contact';
-import * as fileShit from '@/util/fileManager';
+import * as file from '@/util/fileManager';
 import React, { useEffect, useState } from 'react';
 import { Button, StyleSheet, Text, View } from 'react-native';
 
@@ -20,8 +20,8 @@ export default function Index() {
     useEffect(() => {
         const init = async () => {
             try {
-                // fileShit.deleteContactsDirectory()
-                const allUsers = await fileShit.getAllContacts();
+                // file.deleteContactsDirectory()
+                const allUsers = await file.getAllContacts();
                 setContacts(allUsers);
             } catch (err) {
                 console.error(err);
@@ -35,7 +35,7 @@ export default function Index() {
 
     const handleCreateUsers = () => {
         for (const c of seedContacts) {
-            fileShit.createContactFile(c.name, c.phone);
+            file.createContactFile(c.name, c.phone);
         }
     };
 
