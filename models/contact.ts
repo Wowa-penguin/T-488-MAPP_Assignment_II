@@ -10,6 +10,7 @@ interface FileContact {
     phone: string;
     fileName: string;
     uri: string;
+    photo?: string | null;
 }
 
 export { Contact, FileContact };
