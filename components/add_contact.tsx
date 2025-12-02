@@ -8,7 +8,7 @@ import {
     View,
 } from 'react-native';
 
-export default function Get_Contact() {
+export const Get_Contact = () => {
     const [contacts, setContacts] = useState<Contacts.Contact[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -87,7 +87,7 @@ export default function Get_Contact() {
             )}
         </View>
     );
-}
+};
 
 const styles = StyleSheet.create({
     container: {
