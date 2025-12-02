@@ -14,7 +14,7 @@ const generateRandomId = () => {
         .slice(2, 5)}`;
 };
 
-const createContactFile = (name: string, phone: string): FileContact => {
+const createContactFile = (name: string, phone: string, photo: string | null): FileContact => {
     const contactsDir = new Directory(Paths.document, 'contacts');
 
     if (!contactsDir.exists) {
