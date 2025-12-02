@@ -1,46 +1,39 @@
 import { Contact } from '@/models/contact';
-import * as Contacts from 'expo-contacts';
-import { useEffect, useState } from 'react';
+import * as ExpoContacts from 'expo-contacts';
 
-const GetContacts = () => {
-    const [contacts, setContacts] = useState<Contacts.Contact[]>([]);
+const GetContacts = async (): Promise<Contact[]> => {
+    const { status } = await ExpoContacts.requestPermissionsAsync();
 
-    useEffect(() => {
-        (async () => {
-            const { status } = await Contacts.requestPermissionsAsync();
+    if (status !== 'granted') {
+        // Permission denied
+        return [];
+    }
 
-            if (status === 'granted') {
-                const { data } = await Contacts.getContactsAsync({
-                    fields: [
-                        Contacts.Fields.Name,
-                        Contacts.Fields.PhoneNumbers,
-                    ],
-                });
-                console.log(data);
-                setContacts(data);
-            } else {
-                //* If permission is not allowed
-                return [];
-            }
-        })();
-    }, []);
-    if (contacts.length > 0) {
-        const retContactInfo: Contact[] = [];
-        contacts.forEach((contact) => {
-            let phoneNumber: string = '';
-            if (
-                contact.phoneNumbers &&
-                typeof contact.phoneNumbers[0].digits != 'undefined'
-            ) {
-                phoneNumber = contact.phoneNumbers[0].digits;
-            }
+    const { data } = await ExpoContacts.getContactsAsync({
+        fields: [ExpoContacts.Fields.Name, ExpoContacts.Fields.PhoneNumbers],
+    });
+
+    const retContactInfo: Contact[] = [];
+
+    data.forEach((contact) => {
+        let phoneNumber = '';
+
+        if (
+            contact.phoneNumbers &&
+            typeof contact.phoneNumbers[0]?.digits !== 'undefined'
+        ) {
+            phoneNumber = contact.phoneNumbers[0].digits!;
+        }
+
+        if (contact.name && phoneNumber) {
             retContactInfo.push({
                 name: contact.name,
                 phone: phoneNumber,
             });
-        });
-        return retContactInfo;
-    }
+        }
+    });
+
+    return retContactInfo;
 };
 
 export default GetContacts;
