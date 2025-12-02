@@ -1,13 +1,13 @@
-import React from "react";
+import React from 'react';
 import {
     View,
     Text,
     ScrollView,
     StyleSheet,
     TouchableOpacity,
-    Image
+    Image,
 } from 'react-native';
-import {Contact} from "../models/contact.js"
+import { Contact } from '../models/contact.js';
 
 type UserProps = {
     contacts: Contact[];
@@ -17,7 +17,10 @@ export default function User({ contacts }: UserProps) {
     const grouped = groupContacts(contacts);
 
     return (
-        <ScrollView style={{ flex: 1 }} contentContainerStyle={{ paddingBottom: 100 }}>
+        <ScrollView
+            style={{ flex: 1 }}
+            contentContainerStyle={{ paddingBottom: 100 }}
+        >
             {Object.keys(grouped).map((letter) => (
                 <View key={letter}>
                     <View style={styles.sectionHeader}>
@@ -27,23 +30,52 @@ export default function User({ contacts }: UserProps) {
                     {grouped[letter].map((c, index) => (
                         <TouchableOpacity key={index} style={styles.row}>
                             <View style={styles.avatar}>
-                            <Text style={styles.avatarInitial}>
-                                {c.name.charAt(0).toUpperCase()}
-                            </Text>
+                                <Text style={styles.avatarInitial}>
+                                    {c.name.charAt(0).toUpperCase()}
+                                </Text>
                             </View>
                             <Text style={styles.name}>{c.name}</Text>
                         </TouchableOpacity>
-                        ))}
-                </View>   
+                    ))}
+                </View>
             ))}
         </ScrollView>
     );
 }
 
 const ICELANDIC_ALPHABET = [
-    'A', 'Á', 'B', 'D', 'Ð', 'E', 'É', 'F', 'G', 'H', 'I', 'Í', 'J', 'K',
-    'L', 'M', 'N', 'O', 'Ó', 'P', 'R', 'S', 'T', 'U', 'Ú', 'V', 'X', 'Y',
-    'Ý', 'Þ', 'Æ', 'Ö'
+    'A',
+    'Á',
+    'B',
+    'D',
+    'Ð',
+    'E',
+    'É',
+    'F',
+    'G',
+    'H',
+    'I',
+    'Í',
+    'J',
+    'K',
+    'L',
+    'M',
+    'N',
+    'O',
+    'Ó',
+    'P',
+    'R',
+    'S',
+    'T',
+    'U',
+    'Ú',
+    'V',
+    'X',
+    'Y',
+    'Ý',
+    'Þ',
+    'Æ',
+    'Ö',
 ];
 
 function groupContacts(contacts: Contact[]) {
@@ -55,7 +87,7 @@ function groupContacts(contacts: Contact[]) {
 
     sorted.forEach((contact) => {
         let letter = contact.name.charAt(0).toUpperCase();
-        
+
         if (!ICELANDIC_ALPHABET.includes(letter)) {
             letter = '#';
         }
@@ -74,7 +106,7 @@ const styles = StyleSheet.create({
     },
     sectionText: {
         fontSize: 14,
-        color: "#8e8e93",
+        color: '#8e8e93',
     },
     row: {
         flexDirection: 'row',
@@ -82,22 +114,22 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
         paddingHorizontal: 10,
         borderBottomWidth: StyleSheet.hairlineWidth,
-        borderBottomColor: "#e5e5ea"
+        borderBottomColor: '#e5e5ea',
     },
     avatar: {
         width: 40,
         height: 40,
         borderRadius: 20,
-        backgroundColor: "#d1d1d6",
+        backgroundColor: '#d1d1d6',
         marginRight: 15,
-        alignItems: "center",
-        justifyContent: "center",
-      },
-      avatarInitial: {
-        color: "#fff",
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    avatarInitial: {
+        color: '#fff',
         fontSize: 18,
-        fontWeight: "600",
-      },      
+        fontWeight: '600',
+    },
     name: {
         fontSize: 16,
     },
