@@ -1,6 +1,14 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, TextInput, Button, Alert } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
+import React, { useState } from 'react';
+import {
+    Alert,
+    Button,
+    Linking,
+    StyleSheet,
+    Text,
+    TextInput,
+    View,
+} from 'react-native';
 import * as file from '../../util/fileManager';
 
 export default function UserDetailScreen() {
@@ -21,28 +29,28 @@ export default function UserDetailScreen() {
             Alert.alert('Error', 'Cannot save: missing file name.');
             return;
         }
-    
-    const trimmedName = name.trim();
-    const trimmedPhone = phone.trim();
 
-    if (!trimmedName || !trimmedPhone) {
-      Alert.alert('Validation', 'Name and phone cannot be empty.');
-      return;
-    }
+        const trimmedName = name.trim();
+        const trimmedPhone = phone.trim();
 
-    try {
-        await file.updateContactFile(
-            params.fileName as string,
-            trimmedName,
-            trimmedPhone
-        );
+        if (!trimmedName || !trimmedPhone) {
+            Alert.alert('Validation', 'Name and phone cannot be empty.');
+            return;
+        }
 
-    router.back();
-    } catch (err) {
-        console.error('Failed to save contact', err);
-        Alert.alert('Error', 'Failed to save contact.');
-    } 
-};
+        try {
+            await file.updateContactFile(
+                params.fileName as string,
+                trimmedName,
+                trimmedPhone
+            );
+
+            router.back();
+        } catch (err) {
+            console.error('Failed to save contact', err);
+            Alert.alert('Error', 'Failed to save contact.');
+        }
+    };
 
     return (
         <View style={styles.container}>
@@ -62,6 +70,10 @@ export default function UserDetailScreen() {
                 placeholder="Enter phone number"
                 keyboardType="phone-pad"
             />
+            <Button
+                title="Call"
+                onPress={() => Linking.openURL(`tel:${phone}`)}
+            />
 
             <View style={{ marginTop: 32 }}>
                 <Button title="Save" onPress={handleSave} />
@@ -71,21 +83,21 @@ export default function UserDetailScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 24,
-    backgroundColor: '#fff',
-  },
-  label: {
-    fontSize: 14,
-    color: '#8e8e93',
-    marginTop: 16,
-    marginBottom: 4,
-  },
-  input: {
-    fontSize: 18,
-    paddingVertical: 8,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: '#ccc',
-  },
+    container: {
+        flex: 1,
+        padding: 24,
+        backgroundColor: '#fff',
+    },
+    label: {
+        fontSize: 14,
+        color: '#8e8e93',
+        marginTop: 16,
+        marginBottom: 4,
+    },
+    input: {
+        fontSize: 18,
+        paddingVertical: 8,
+        borderBottomWidth: StyleSheet.hairlineWidth,
+        borderBottomColor: '#ccc',
+    },
 });
