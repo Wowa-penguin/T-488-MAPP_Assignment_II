@@ -108,9 +108,56 @@ const deleteContactsDirectory = () => {
     console.log('Contacts directory deleted.');
 };
 
+const updateContactFile = async (
+    fileName: string,
+    name: string,
+    phone: string
+): Promise<FileContact | null> => {
+    const contactsDir = new Directory(Paths.document, 'contacts');
+
+    if (!contactsDir.exists) {
+        console.warn('Contacts directory does not exist');
+        return null;
+    }
+
+    const file = new File(contactsDir, fileName);
+    
+    if (!file.exists) {
+        console.warn('Contact file not found:', fileName);
+        return null;
+    }
+
+    let id = '';
+    try {
+        const textPromise = file.text();
+        const text = await textPromise;
+        const data = JSON.parse(text);
+        id = data.id ?? '';    
+    } catch (e) {
+        console.warn('Failed to read existing contact for update:', e);
+    }
+
+    if (!id) {
+        id = generateRandomId();
+    }
+
+    const payload = { id, name, phone };
+
+    file.write(JSON.stringify(payload, null, 2));
+
+    return {
+        id,
+        name,
+        phone,
+        fileName,
+        uri: file.uri,
+    };
+};
+
 export {
     createContactFile,
     deleteContactsDirectory,
     getAllContacts,
     getContactInfo,
+    updateContactFile,
 };
