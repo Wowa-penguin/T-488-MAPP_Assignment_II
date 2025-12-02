@@ -77,6 +77,7 @@ const styles = StyleSheet.create({
         flex: 1,
         padding: 16,
         backgroundColor: '#fff',
+        marginBottom: 40,
     },
     addButton: {
         position: 'absolute',
@@ -92,6 +93,7 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.3,
         shadowRadius: 4,
         elevation: 4,
+        marginBottom: 30,
     },
     addButtonText: {
         color: '#fff',
