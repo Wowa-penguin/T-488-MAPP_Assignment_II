@@ -1,20 +1,12 @@
 import Search from '@/components/search';
 import User from '@/components/user';
-import { Contact, FileContact } from '@/models/contact';
+import { FileContact } from '@/models/contact';
 import GetContacts from '@/util/getContacts';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import * as file from '../util/fileManager';
-
-const seedContacts: Contact[] = [
-    { name: 'Guðný', phone: '5812345' },
-    { name: 'Heimir', phone: '5812345' },
-    { name: 'Bjarki', phone: '5812345' },
-    { name: 'Vita', phone: '5812345' },
-    { name: 'Callum', phone: '54292' },
-];
 
 const CONTACTS_IMPORTED_KEY = 'CONTACTS_IMPORTED_V1';
 

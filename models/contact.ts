@@ -1,9 +1,3 @@
-type Contact = {
-    name: string;
-    phone: string;
-    photo?: string | null;
-};
-
 interface FileContact {
     id: string;
     name: string;
@@ -13,4 +7,4 @@ interface FileContact {
     photo?: string | null;
 }
 
-export { Contact, FileContact };
+export { FileContact };
