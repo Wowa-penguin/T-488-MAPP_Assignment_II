@@ -5,7 +5,7 @@ import GetContacts from '@/util/getContacts';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
 import React, { useEffect, useState } from 'react';
-import { Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import * as file from '../util/fileManager';
 
 const seedContacts: Contact[] = [
@@ -52,13 +52,6 @@ export default function Index() {
         init();
     }, []);
 
-    const handleCreateUsers = () => {
-        // temp seeding
-        for (const c of seedContacts) {
-            file.createContactFile(c.name, c.phone);
-        }
-    };
-
     const filteredContacts = contacts.filter((c) =>
         c.name.toLowerCase().includes(search.toLowerCase())
     );
@@ -71,10 +64,6 @@ export default function Index() {
                 <>
                     <Search value={search} onChange={setSearch} />
                     <User contacts={filteredContacts} />
-                    <Button
-                        title="Create users temp"
-                        onPress={handleCreateUsers}
-                    />
                     <TouchableOpacity
                         style={styles.addButton}
                         onPress={() => router.push('/addContect')}
