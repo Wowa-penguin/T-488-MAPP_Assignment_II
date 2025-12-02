@@ -2,6 +2,7 @@ import Search from '@/components/search';
 import User from '@/components/user';
 import { Contact } from '@/models/contact';
 import GetContacts from '@/util/getContacts';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import { Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
@@ -15,24 +16,30 @@ const seedContacts: Contact[] = [
     { name: 'Callum', phone: '54292' },
 ];
 
+const CONTACTS_IMPORTED_KEY = 'CONTACTS_IMPORTED_V1';
+
 export default function Index() {
     const router = useRouter();
     const [search, setSearch] = useState('');
     const [isLoading, setIsLoading] = useState(true);
     const [contacts, setContacts] = useState<Contact[]>([]);
 
-    const oldCotacts = GetContacts();
-    if (!oldCotacts) {
-        //todo: display no old contacts
-    } else {
-        for (const c of oldCotacts) {
-            file.createContactFile(c.name, c.phone);
-        }
-    }
-
     useEffect(() => {
         const init = async () => {
             try {
+                const importedFlag = await AsyncStorage.getItem(
+                    CONTACTS_IMPORTED_KEY
+                );
+
+                if (!importedFlag) {
+                    const oldContacts = await GetContacts();
+
+                    for (const c of oldContacts) {
+                        file.createContactFile(c.name, c.phone);
+                    }
+                    await AsyncStorage.setItem(CONTACTS_IMPORTED_KEY, 'true');
+                }
+
                 const allUsers = await file.getAllContacts();
                 setContacts(allUsers);
             } catch (err) {
@@ -46,7 +53,7 @@ export default function Index() {
     }, []);
 
     const handleCreateUsers = () => {
-        //! temp
+        // temp seeding
         for (const c of seedContacts) {
             file.createContactFile(c.name, c.phone);
         }
@@ -59,9 +66,7 @@ export default function Index() {
     return (
         <View style={styles.container}>
             {isLoading ? (
-                <>
-                    <Text>Is Loading </Text>
-                </>
+                <Text>Is Loading</Text>
             ) : (
                 <>
                     <Search value={search} onChange={setSearch} />
@@ -98,6 +103,7 @@ const styles = StyleSheet.create({
         borderRadius: 26,
         backgroundColor: '#c9c5c5',
         alignItems: 'center',
+        justifyContent: 'center',
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.3,
@@ -108,6 +114,5 @@ const styles = StyleSheet.create({
     addButtonText: {
         color: '#fff',
         fontSize: 30,
-        marginTop: 7,
     },
 });
