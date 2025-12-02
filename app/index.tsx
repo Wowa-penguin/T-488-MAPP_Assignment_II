@@ -1,6 +1,6 @@
 import Search from '@/components/search';
 import User from '@/components/user';
-import { Contact } from '@/models/contact';
+import { Contact, FileContact } from '@/models/contact';
 import GetContacts from '@/util/getContacts';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
@@ -22,7 +22,7 @@ export default function Index() {
     const router = useRouter();
     const [search, setSearch] = useState('');
     const [isLoading, setIsLoading] = useState(true);
-    const [contacts, setContacts] = useState<Contact[]>([]);
+    const [contacts, setContacts] = useState<FileContact[]>([]);
 
     useEffect(() => {
         const init = async () => {

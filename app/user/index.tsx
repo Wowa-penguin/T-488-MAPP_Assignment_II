@@ -1,36 +1,48 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TextInput } from 'react-native';
-import { useLocalSearchParams } from 'expo-router';
+import { View, Text, StyleSheet, TextInput, Button } from 'react-native';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 
 export default function UserDetailScreen() {
-  const params = useLocalSearchParams<{
-    name?: string;
-    phone?: string;
-  }>();
+    const router = useRouter();
 
-  const [name, setName] = useState(params.name ?? '');
-  const [phone, setPhone] = useState(params.phone ?? '');
+    const params = useLocalSearchParams<{
+        name?: string;
+        phone?: string;
+        fileName?: string;
+    }>();
 
-  return (
-    <View style={styles.container}>
-      <Text style={styles.label}>Name</Text>
-      <TextInput
-        style={styles.input}
-        value={name}
-        onChangeText={setName}
-        placeholder="Enter name"
-      />
+    const [name, setName] = useState(params.name ?? '');
+    const [phone, setPhone] = useState(params.phone ?? '');
 
-      <Text style={styles.label}>Phone</Text>
-      <TextInput
-        style={styles.input}
-        value={phone}
-        onChangeText={setPhone}
-        placeholder="Enter phone number"
-        keyboardType="phone-pad"
-      />
-    </View>
-  );
+    const handleSave = () => {
+        console.log("Saving contact:");
+        console.log({ name, phone, fileName: params.fileName });
+    };
+
+    return (
+        <View style={styles.container}>
+            <Text style={styles.label}>Name</Text>
+            <TextInput
+                style={styles.input}
+                value={name}
+                onChangeText={setName}
+                placeholder="Enter name"
+            />
+
+            <Text style={styles.label}>Phone</Text>
+            <TextInput
+                style={styles.input}
+                value={phone}
+                onChangeText={setPhone}
+                placeholder="Enter phone number"
+                keyboardType="phone-pad"
+            />
+
+            <View style={{ marginTop: 32 }}>
+                <Button title="Save" onPress={handleSave} />
+            </View>
+        </View>
+    );
 }
 
 const styles = StyleSheet.create({
