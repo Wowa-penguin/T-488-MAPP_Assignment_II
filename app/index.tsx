@@ -27,7 +27,7 @@ export default function Index() {
                     const oldContacts = await GetContacts();
 
                     for (const c of oldContacts) {
-                        file.createContactFile(c.name, c.phone);
+                        file.createContactFile(c.name, c.phone, c.photo);
                     }
                     await AsyncStorage.setItem(CONTACTS_IMPORTED_KEY, 'true');
                 }
