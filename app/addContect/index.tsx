@@ -8,6 +8,8 @@ const AddContact = () => {
     const [name, setName] = useState('');
     const [phone, setPhone] = useState('');
 
+    // ! Vantar að setja inn mynd af nýja contact
+
     const handleSave = async () => {
         if (!name.trim()) {
             Alert.alert(
