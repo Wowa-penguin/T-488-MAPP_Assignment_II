@@ -8,10 +8,10 @@ import {
     TouchableOpacity,
     View,
 } from 'react-native';
-import { Contact } from '../models/contact.js';
+import { FileContact } from '../models/contact.js';
 
 type UserProps = {
-    contacts: Contact[];
+    contacts: FileContact[];
 };
 
 export default function User({ contacts }: UserProps) {
@@ -99,12 +99,12 @@ const ALPHABET = [
     'Ö',
 ];
 
-function groupContacts(contacts: Contact[]) {
+function groupContacts(contacts: FileContact[]) {
     const sorted = [...contacts].sort((a, b) =>
         a.name.localeCompare(b.name, 'is', { sensitivity: 'base' })
     );
 
-    const groups: Record<string, Contact[]> = {};
+    const groups: Record<string, FileContact[]> = {};
 
     sorted.forEach((contact) => {
         let letter = contact.name.charAt(0).toUpperCase();
