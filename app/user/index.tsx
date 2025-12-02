@@ -1,6 +1,7 @@
+import { FileContact } from '@/models/contact';
 import * as ImagePicker from 'expo-image-picker';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     Alert,
     Button,
@@ -17,14 +18,33 @@ export default function UserDetailScreen() {
     const router = useRouter();
 
     const params = useLocalSearchParams<{
-        name?: string;
-        phone?: string;
-        fileName?: string;
+        fileUri: string;
     }>();
 
-    const [name, setName] = useState(params.name ?? '');
-    const [phone, setPhone] = useState(params.phone ?? '');
-    const [photoUri, setPhotoUri] = useState<string>('');
+    const [user, setUser] = useState<FileContact>();
+    const [name, setName] = useState('');
+    const [phone, setPhone] = useState('');
+    const [photoUri, setPhotoUri] = useState('');
+
+    useEffect(() => {
+        const init = async () => {
+            try {
+                const user = await file.getContactInfo(params.fileUri);
+                if (!user) {
+                    Alert.alert('Error'); // todo: fix
+                    return;
+                }
+                setUser(user);
+                setName(user.name);
+                setPhone(user.phone);
+                setPhotoUri(user.photo);
+            } catch (err) {
+                console.error(err);
+            }
+        };
+
+        init();
+    }, [params.fileUri]);
 
     const pickFromLibrary = async () => {
         const { status } =
@@ -75,9 +95,8 @@ export default function UserDetailScreen() {
     };
 
     const handleSave = async () => {
-        if (!params.fileName) {
-            console.warn('No fileName passed to detail screen');
-            Alert.alert('Error', 'Cannot save: missing file name.');
+        if (!user?.fileName) {
+            Alert.alert('Error'); // todo: fix
             return;
         }
 
@@ -91,7 +110,7 @@ export default function UserDetailScreen() {
 
         try {
             await file.updateContactFile(
-                params.fileName as string,
+                user.fileName,
                 trimmedName,
                 trimmedPhone,
                 photoUri

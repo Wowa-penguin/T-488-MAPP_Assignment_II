@@ -84,7 +84,9 @@ const getAllContacts = async (): Promise<FileContact[]> => {
     return contacts;
 };
 
-const getContactInfo = async (fileUri: string) => {
+const getContactInfo = async (
+    fileUri: string
+): Promise<FileContact | undefined> => {
     const file = new File(fileUri);
 
     if (!file.exists) {

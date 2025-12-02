@@ -42,9 +42,10 @@ export default function User({ contacts }: UserProps) {
                                 router.push({
                                     pathname: '/user',
                                     params: {
-                                        name: c.name,
-                                        phone: c.phone,
-                                        fileName: c.fileName,
+                                        fileUri: c.uri,
+                                        // name: c.name,
+                                        // phone: c.phone,
+                                        // fileName: c.fileName,
                                     },
                                 })
                             }
