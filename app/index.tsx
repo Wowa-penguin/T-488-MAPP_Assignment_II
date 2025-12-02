@@ -1,6 +1,7 @@
 import Search from '@/components/search';
 import User from '@/components/user';
 import { Contact } from '@/models/contact';
+import GetContacts from '@/util/getContacts';
 import { useRouter } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import { Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
@@ -20,10 +21,18 @@ export default function Index() {
     const [isLoading, setIsLoading] = useState(true);
     const [contacts, setContacts] = useState<Contact[]>([]);
 
+    const oldCotacts = GetContacts();
+    if (!oldCotacts) {
+        //todo: display no old contacts
+    } else {
+        for (const c of oldCotacts) {
+            file.createContactFile(c.name, c.phone);
+        }
+    }
+
     useEffect(() => {
         const init = async () => {
             try {
-                // file.deleteContactsDirectory()
                 const allUsers = await file.getAllContacts();
                 setContacts(allUsers);
             } catch (err) {
@@ -37,6 +46,7 @@ export default function Index() {
     }, []);
 
     const handleCreateUsers = () => {
+        //! temp
         for (const c of seedContacts) {
             file.createContactFile(c.name, c.phone);
         }
