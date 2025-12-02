@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TextInput, Button } from 'react-native';
+import { View, Text, StyleSheet, TextInput, Button, Alert } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
+import * as file from '../../util/fileManager';
 
 export default function UserDetailScreen() {
     const router = useRouter();
@@ -14,10 +15,34 @@ export default function UserDetailScreen() {
     const [name, setName] = useState(params.name ?? '');
     const [phone, setPhone] = useState(params.phone ?? '');
 
-    const handleSave = () => {
-        console.log("Saving contact:");
-        console.log({ name, phone, fileName: params.fileName });
-    };
+    const handleSave = async () => {
+        if (!params.fileName) {
+            console.warn('No fileName passed to detail screen');
+            Alert.alert('Error', 'Cannot save: missing file name.');
+            return;
+        }
+    
+    const trimmedName = name.trim();
+    const trimmedPhone = phone.trim();
+
+    if (!trimmedName || !trimmedPhone) {
+      Alert.alert('Validation', 'Name and phone cannot be empty.');
+      return;
+    }
+
+    try {
+        await file.updateContactFile(
+            params.fileName as string,
+            trimmedName,
+            trimmedPhone
+        );
+
+    router.back();
+    } catch (err) {
+        console.error('Failed to save contact', err);
+        Alert.alert('Error', 'Failed to save contact.');
+    } 
+};
 
     return (
         <View style={styles.container}>
