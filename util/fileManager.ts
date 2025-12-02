@@ -11,7 +11,7 @@ const slugify = (name: string) =>
 const generateRandomId = () => {
     return `${Date.now().toString(36)}-${Math.random()
         .toString(36)
-        .slice(2, 10)}`;
+        .slice(2, 5)}`;
 };
 
 const createContactFile = (name: string, phone: string): FileContact => {
@@ -78,6 +78,23 @@ const getAllContacts = async (): Promise<FileContact[]> => {
     return contacts;
 };
 
+const getContactInfo = async (fileUri: string) => {
+    const file = new File(fileUri);
+
+    if (!file.exists) {
+        console.error('Error in getContactInfo');
+        return;
+    }
+
+    try {
+        const text = file.text();
+        const data = JSON.parse(await text);
+        return data;
+    } catch (e) {
+        console.warn('Error in (getContactInfo):', e);
+    }
+};
+
 const deleteContactsDirectory = () => {
     const contactsDir = new Directory(Paths.document, 'contacts');
 
@@ -91,4 +108,9 @@ const deleteContactsDirectory = () => {
     console.log('Contacts directory deleted.');
 };
 
-export { createContactFile, deleteContactsDirectory, getAllContacts };
+export {
+    createContactFile,
+    deleteContactsDirectory,
+    getAllContacts,
+    getContactInfo,
+};
