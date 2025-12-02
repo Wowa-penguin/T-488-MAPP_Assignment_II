@@ -1,6 +1,6 @@
 import Search from '@/components/search';
 import User from '@/components/user';
-import { Contact } from '@/models/contact';
+import { Contact, FileContact } from '@/models/contact';
 import GetContacts from '@/util/getContacts';
 import { useRouter } from 'expo-router';
 import React, { useEffect, useState } from 'react';
@@ -19,13 +19,13 @@ export default function Index() {
     const router = useRouter();
     const [search, setSearch] = useState('');
     const [isLoading, setIsLoading] = useState(true);
-    const [contacts, setContacts] = useState<Contact[]>([]);
+    const [contacts, setContacts] = useState<FileContact[]>([]);
 
-    const oldCotacts = GetContacts();
-    if (!oldCotacts) {
+    const oldContacts = GetContacts();
+    if (!oldContacts) {
         //todo: display no old contacts
     } else {
-        for (const c of oldCotacts) {
+        for (const c of oldContacts) {
             file.createContactFile(c.name, c.phone);
         }
     }
