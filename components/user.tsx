@@ -43,10 +43,11 @@ export default function User({ contacts }: UserProps) {
     );
 }
 
-const ICELANDIC_ALPHABET = [
+const ALPHABET = [
     'A',
     'Á',
     'B',
+    'C',
     'D',
     'Ð',
     'E',
@@ -70,6 +71,7 @@ const ICELANDIC_ALPHABET = [
     'U',
     'Ú',
     'V',
+    'W',
     'X',
     'Y',
     'Ý',
@@ -88,7 +90,7 @@ function groupContacts(contacts: Contact[]) {
     sorted.forEach((contact) => {
         let letter = contact.name.charAt(0).toUpperCase();
 
-        if (!ICELANDIC_ALPHABET.includes(letter)) {
+        if (!ALPHABET.includes(letter)) {
             letter = '#';
         }
 

@@ -1,18 +1,21 @@
 import Search from '@/components/search';
 import User from '@/components/user';
 import { Contact } from '@/models/contact';
-import * as file from '@/util/fileManager';
+import * as file from '../util/fileManager';
+import { useRouter } from 'expo-router';
 import React, { useEffect, useState } from 'react';
-import { Button, StyleSheet, Text, View } from 'react-native';
+import { Button, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 
 const seedContacts: Contact[] = [
     { name: 'Guðný', phone: '5812345' },
     { name: 'Heimir', phone: '5812345' },
     { name: 'Bjarki', phone: '5812345' },
     { name: 'Vita', phone: '5812345' },
+    { name: 'Callum', phone: '54292'},
 ];
 
 export default function Index() {
+    const router = useRouter();
     const [search, setSearch] = useState('');
     const [isLoading, setIsLoading] = useState(true);
     const [contacts, setContacts] = useState<Contact[]>([]);
@@ -57,6 +60,12 @@ export default function Index() {
                         title="Create users temp"
                         onPress={handleCreateUsers}
                     />
+                    <TouchableOpacity
+                      style={styles.addButton}
+                      onPress={() => router.push('/add_contact')}
+                      >
+                        <Text style={styles.addButtonText}>+</Text>
+                      </TouchableOpacity>
                 </>
             )}
         </View>
@@ -69,4 +78,25 @@ const styles = StyleSheet.create({
         padding: 16,
         backgroundColor: '#fff',
     },
+    addButton: {
+      position: 'absolute',
+      right: 24,
+      bottom: 40,
+      width: 52,
+      height: 52,
+      borderRadius: 26,
+      backgroundColor: '#c9c5c5',
+      alignItems: 'center',
+      shadowColor: '#000',
+      shadowOffset: {width: 0, height: 2},
+      shadowOpacity: 0.3,
+      shadowRadius: 4,
+      elevation: 4,
+    },
+    addButtonText: {
+      color: '#fff',
+      fontSize: 30,
+      marginTop: 7,
+    },
+
 });
