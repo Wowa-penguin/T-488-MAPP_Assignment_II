@@ -8,6 +8,7 @@ import {
     Text,
     TextInput,
     View,
+    Image
 } from 'react-native';
 import * as file from '../../util/fileManager';
 
@@ -22,6 +23,8 @@ export default function UserDetailScreen() {
 
     const [name, setName] = useState(params.name ?? '');
     const [phone, setPhone] = useState(params.phone ?? '');
+    const [photoUri, setPhotoUri] = useState<string | null>(null);
+
 
     const handleSave = async () => {
         if (!params.fileName) {
@@ -54,6 +57,20 @@ export default function UserDetailScreen() {
 
     return (
         <View style={styles.container}>
+            <View style={{ alignItems: 'center', marginBottom: 20 }}>
+                {photoUri ? (
+                    <Image source={{ uri: photoUri }} style={styles.photo} />
+                ) : (
+                    <View style={styles.photoPlaceholder}>
+                    <Text style={{ fontSize: 40, color: '#888' }}>
+                        {name ? name[0].toUpperCase() : '?'}
+                    </Text>
+                    </View>
+                )}
+
+                <Button title="Change photo" onPress={() => { /* to be implemented later */ }} />
+                </View>
+            
             <Text style={styles.label}>Name</Text>
             <TextInput
                 style={styles.input}
@@ -99,5 +116,21 @@ const styles = StyleSheet.create({
         paddingVertical: 8,
         borderBottomWidth: StyleSheet.hairlineWidth,
         borderBottomColor: '#ccc',
+    },
+    photo: {
+    width: 120,
+    height: 120,
+    borderRadius: 60,
+    marginBottom: 10,
+    },
+
+    photoPlaceholder: {
+    width: 120,
+    height: 120,
+    borderRadius: 60,
+    backgroundColor: '#ddd',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 10,
     },
 });
