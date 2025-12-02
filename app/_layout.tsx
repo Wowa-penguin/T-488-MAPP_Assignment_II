@@ -5,7 +5,11 @@ export default function Layout() {
     return (
         <Stack>
             <Stack.Screen name="index" options={{ title: 'Contacts' }} />
-            <Stack.Screen name="user/index" options={{ title: 'Contact' }} />
+            <Stack.Screen name="user/index" options={{ title: 'User' }} />
+            <Stack.Screen
+                name="addContect/index"
+                options={{ title: 'Add Contect' }}
+            />
         </Stack>
     );
 }

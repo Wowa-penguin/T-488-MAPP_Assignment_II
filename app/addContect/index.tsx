@@ -1,28 +1,24 @@
-import * as file from '../util/fileManager';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
-import {
-    Alert,
-    Button,
-    StyleSheet,
-    Text,
-    TextInput,
-    View,
-} from 'react-native';
+import { Alert, Button, StyleSheet, Text, TextInput, View } from 'react-native';
+import * as file from '../../util/fileManager';
 
-export default function AddContact() {
+const AddContact = () => {
     const router = useRouter();
     const [name, setName] = useState('');
     const [phone, setPhone] = useState('');
 
     const handleSave = async () => {
         if (!name.trim()) {
-            Alert.alert('Name required', 'Please enter a name for the contact.');
+            Alert.alert(
+                'Name required',
+                'Please enter a name for the contact.'
+            );
             return;
         }
 
         try {
-            await file.createContactFile(name.trim(), phone.trim());
+            file.createContactFile(name.trim(), phone.trim());
             router.back();
         } catch (err) {
             console.error(err);
@@ -58,7 +54,7 @@ export default function AddContact() {
             <Button title="Save contact" onPress={handleSave} />
         </View>
     );
-}
+};
 
 const styles = StyleSheet.create({
     container: {
@@ -89,3 +85,5 @@ const styles = StyleSheet.create({
         fontSize: 16,
     },
 });
+
+export default AddContact;
