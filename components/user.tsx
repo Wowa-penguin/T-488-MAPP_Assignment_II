@@ -8,7 +8,7 @@ import {
     TouchableOpacity,
     View,
 } from 'react-native';
-import { FileContact } from '../models/contact.js';
+import { FileContact } from '../models/contact';
 
 type UserProps = {
     contacts: FileContact[];
@@ -43,6 +43,7 @@ export default function User({ contacts }: UserProps) {
                                     params: {
                                         name: c.name,
                                         phone: c.phone,
+                                        fileName: c.fileName,
                                     },
                                 })
                             }
