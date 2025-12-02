@@ -1,14 +1,15 @@
+import * as ImagePicker from 'expo-image-picker';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import {
     Alert,
     Button,
+    Image,
     Linking,
     StyleSheet,
     Text,
     TextInput,
     View,
-    Image
 } from 'react-native';
 import * as file from '../../util/fileManager';
 
@@ -23,8 +24,55 @@ export default function UserDetailScreen() {
 
     const [name, setName] = useState(params.name ?? '');
     const [phone, setPhone] = useState(params.phone ?? '');
-    const [photoUri, setPhotoUri] = useState<string | null>(null);
+    const [photoUri, setPhotoUri] = useState<string>('');
 
+    const pickFromLibrary = async () => {
+        const { status } =
+            await ImagePicker.requestMediaLibraryPermissionsAsync();
+        if (status !== 'granted') {
+            Alert.alert(
+                'Premission needed',
+                'We need access to your photos to add a contact image.'
+            );
+            return;
+        }
+
+        const result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            quality: 0.8,
+        });
+
+        if (!result.canceled) {
+            setPhotoUri(result.assets[0].uri);
+        }
+    };
+
+    const handleAddPhoto = () => {
+        Alert.alert('Add photo', 'Choose source', [
+            { text: 'Camera', onPress: takePhoto },
+            { text: 'Photo library', onPress: pickFromLibrary },
+            { text: 'Cancel', style: 'cancel' },
+        ]);
+    };
+
+    const takePhoto = async () => {
+        const { status } = await ImagePicker.requestCameraPermissionsAsync();
+        if (status !== 'granted') {
+            Alert.alert(
+                'Premission needed',
+                'We need access to you camera to take a contact photo.'
+            );
+            return;
+        }
+
+        const result = await ImagePicker.launchCameraAsync({
+            quality: 0.8,
+        });
+
+        if (!result.canceled) {
+            setPhotoUri(result.assets[0].uri);
+        }
+    };
 
     const handleSave = async () => {
         if (!params.fileName) {
@@ -45,9 +93,9 @@ export default function UserDetailScreen() {
             await file.updateContactFile(
                 params.fileName as string,
                 trimmedName,
-                trimmedPhone
+                trimmedPhone,
+                photoUri
             );
-
             router.back();
         } catch (err) {
             console.error('Failed to save contact', err);
@@ -62,15 +110,15 @@ export default function UserDetailScreen() {
                     <Image source={{ uri: photoUri }} style={styles.photo} />
                 ) : (
                     <View style={styles.photoPlaceholder}>
-                    <Text style={{ fontSize: 40, color: '#888' }}>
-                        {name ? name[0].toUpperCase() : '?'}
-                    </Text>
+                        <Text style={{ fontSize: 40, color: '#888' }}>
+                            {name ? name[0].toUpperCase() : '?'}
+                        </Text>
                     </View>
                 )}
 
-                <Button title="Change photo" onPress={() => { /* to be implemented later */ }} />
-                </View>
-            
+                <Button title="Change photo" onPress={handleAddPhoto} />
+            </View>
+
             <Text style={styles.label}>Name</Text>
             <TextInput
                 style={styles.input}
@@ -118,19 +166,19 @@ const styles = StyleSheet.create({
         borderBottomColor: '#ccc',
     },
     photo: {
-    width: 120,
-    height: 120,
-    borderRadius: 60,
-    marginBottom: 10,
+        width: 120,
+        height: 120,
+        borderRadius: 60,
+        marginBottom: 10,
     },
 
     photoPlaceholder: {
-    width: 120,
-    height: 120,
-    borderRadius: 60,
-    backgroundColor: '#ddd',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 10,
+        width: 120,
+        height: 120,
+        borderRadius: 60,
+        backgroundColor: '#ddd',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginBottom: 10,
     },
 });

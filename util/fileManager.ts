@@ -14,7 +14,11 @@ const generateRandomId = () => {
         .slice(2, 5)}`;
 };
 
-const createContactFile = (name: string, phone: string, photo: string | null): FileContact => {
+const createContactFile = (
+    name: string,
+    phone: string,
+    photo: string
+): FileContact => {
     const contactsDir = new Directory(Paths.document, 'contacts');
 
     if (!contactsDir.exists) {
@@ -29,7 +33,7 @@ const createContactFile = (name: string, phone: string, photo: string | null): F
     const file = new File(contactsDir, fileName);
 
     if (!file.exists) {
-        const payload = { id, name, phone };
+        const payload = { id, name, phone, photo };
         file.create();
         file.write(JSON.stringify(payload, null, 2));
     }
@@ -38,6 +42,7 @@ const createContactFile = (name: string, phone: string, photo: string | null): F
         id,
         name,
         phone,
+        photo,
         fileName,
         uri: file.uri,
     };
@@ -66,6 +71,7 @@ const getAllContacts = async (): Promise<FileContact[]> => {
                 name: data.name ?? '',
                 phone: data.phone ?? '',
                 fileName: entry.name,
+                photo: data.photo ?? '',
                 uri: entry.uri,
             };
 
@@ -111,7 +117,8 @@ const deleteContactsDirectory = () => {
 const updateContactFile = async (
     fileName: string,
     name: string,
-    phone: string
+    phone: string,
+    photo: string
 ): Promise<FileContact | null> => {
     const contactsDir = new Directory(Paths.document, 'contacts');
 
@@ -121,18 +128,18 @@ const updateContactFile = async (
     }
 
     const file = new File(contactsDir, fileName);
-    
+
     if (!file.exists) {
         console.warn('Contact file not found:', fileName);
         return null;
     }
 
     let id = '';
+
     try {
-        const textPromise = file.text();
-        const text = await textPromise;
-        const data = JSON.parse(text);
-        id = data.id ?? '';    
+        const text = file.text();
+        const data = JSON.parse(await text);
+        id = data.id ?? '';
     } catch (e) {
         console.warn('Failed to read existing contact for update:', e);
     }
@@ -141,7 +148,7 @@ const updateContactFile = async (
         id = generateRandomId();
     }
 
-    const payload = { id, name, phone };
+    const payload = { id, name, phone, photo };
 
     file.write(JSON.stringify(payload, null, 2));
 
@@ -149,6 +156,7 @@ const updateContactFile = async (
         id,
         name,
         phone,
+        photo,
         fileName,
         uri: file.uri,
     };

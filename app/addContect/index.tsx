@@ -1,26 +1,26 @@
+import * as ImagePicker from 'expo-image-picker';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
-import { 
-    Alert, 
-    Button, 
-    StyleSheet, 
-    Text, 
-    TextInput, 
-    View, 
-    Image, 
+import {
+    Alert,
+    Button,
+    Image,
+    StyleSheet,
+    Text,
+    TextInput,
     TouchableOpacity,
+    View,
 } from 'react-native';
-import * as ImagePicker from 'expo-image-picker';
 import * as file from '../../util/fileManager';
 
 const AddContact = () => {
     const router = useRouter();
     const [name, setName] = useState('');
     const [phone, setPhone] = useState('');
-    const [photo, setPhoto] = useState<string | null>(null);
+    const [photo, setPhoto] = useState<string>('');
 
     const pickFromLibrary = async () => {
-        const {status} = 
+        const { status } =
             await ImagePicker.requestMediaLibraryPermissionsAsync();
         if (status !== 'granted') {
             Alert.alert(
@@ -41,8 +41,7 @@ const AddContact = () => {
     };
 
     const takePhoto = async () => {
-        const {status} = 
-            await ImagePicker.requestCameraPermissionsAsync();
+        const { status } = await ImagePicker.requestCameraPermissionsAsync();
         if (status !== 'granted') {
             Alert.alert(
                 'Premission needed',

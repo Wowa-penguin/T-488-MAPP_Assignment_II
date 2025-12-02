@@ -1,13 +1,13 @@
 import { useRouter } from 'expo-router';
 import React from 'react';
 import {
+    Image,
     Linking,
     ScrollView,
     StyleSheet,
     Text,
     TouchableOpacity,
     View,
-    Image,
 } from 'react-native';
 import { FileContact } from '../models/contact';
 
@@ -52,13 +52,16 @@ export default function User({ contacts }: UserProps) {
                         >
                             <View style={styles.avatar}>
                                 {c.photo ? (
-                                    <Image source={{ uri: c.photo }} style={styles.avatarImage} />
+                                    <Image
+                                        source={{ uri: c.photo }}
+                                        style={styles.avatarImage}
+                                    />
                                 ) : (
                                     <Text style={styles.avatarInitial}>
-                                    {c.name.charAt(0).toUpperCase()}
+                                        {c.name.charAt(0).toUpperCase()}
                                     </Text>
                                 )}
-                                </View>
+                            </View>
                             <Text style={styles.name}>{c.name}</Text>
                         </TouchableOpacity>
                     ))}
@@ -165,5 +168,4 @@ const styles = StyleSheet.create({
         height: 40,
         borderRadius: 20,
     },
-    
 });

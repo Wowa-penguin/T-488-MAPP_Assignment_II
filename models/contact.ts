@@ -4,7 +4,7 @@ interface FileContact {
     phone: string;
     fileName: string;
     uri: string;
-    photo: string | null;
+    photo: string;
 }
 
 export { FileContact };
