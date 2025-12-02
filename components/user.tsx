@@ -1,24 +1,27 @@
+import { useRouter } from 'expo-router';
 import React from 'react';
 import {
-    View,
-    Text,
+    Linking,
     ScrollView,
     StyleSheet,
+    Text,
     TouchableOpacity,
-    Image,
+    View,
 } from 'react-native';
-import { FileContact } from '../models/contact';
-import { useRouter } from 'expo-router';
+import { Contact } from '../models/contact.js';
 
 type UserProps = {
-    contacts: FileContact[];
+    contacts: Contact[];
 };
 
 export default function User({ contacts }: UserProps) {
     const router = useRouter();
 
     const grouped = groupContacts(contacts);
-
+    const handleCall = (phone: string) => {
+        if (!phone) return;
+        Linking.openURL(`tel:${phone}`);
+    };
     return (
         <ScrollView
             style={{ flex: 1 }}
@@ -31,8 +34,8 @@ export default function User({ contacts }: UserProps) {
                     </View>
 
                     {grouped[letter].map((c, index) => (
-                        <TouchableOpacity 
-                            key={index} 
+                        <TouchableOpacity
+                            key={index}
                             style={styles.row}
                             onPress={() =>
                                 router.push({
@@ -40,12 +43,11 @@ export default function User({ contacts }: UserProps) {
                                     params: {
                                         name: c.name,
                                         phone: c.phone,
-                                        fileName: c.fileName,
                                     },
                                 })
                             }
+                            onLongPress={() => handleCall(c.phone)}
                         >
-
                             <View style={styles.avatar}>
                                 <Text style={styles.avatarInitial}>
                                     {c.name.charAt(0).toUpperCase()}
@@ -97,12 +99,12 @@ const ALPHABET = [
     'Ö',
 ];
 
-function groupContacts(contacts: FileContact[]) {
+function groupContacts(contacts: Contact[]) {
     const sorted = [...contacts].sort((a, b) =>
         a.name.localeCompare(b.name, 'is', { sensitivity: 'base' })
     );
 
-    const groups: Record<string, FileContact[]> = {};
+    const groups: Record<string, Contact[]> = {};
 
     sorted.forEach((contact) => {
         let letter = contact.name.charAt(0).toUpperCase();
