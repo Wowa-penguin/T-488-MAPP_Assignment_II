@@ -8,12 +8,15 @@ import {
     Image,
 } from 'react-native';
 import { Contact } from '../models/contact.js';
+import { useRouter } from 'expo-router';
 
 type UserProps = {
     contacts: Contact[];
 };
 
 export default function User({ contacts }: UserProps) {
+    const router = useRouter();
+
     const grouped = groupContacts(contacts);
 
     return (
@@ -28,7 +31,20 @@ export default function User({ contacts }: UserProps) {
                     </View>
 
                     {grouped[letter].map((c, index) => (
-                        <TouchableOpacity key={index} style={styles.row}>
+                        <TouchableOpacity 
+                            key={index} 
+                            style={styles.row}
+                            onPress={() =>
+                                router.push({
+                                    pathname: '/user',
+                                    params: {
+                                        name: c.name,
+                                        phone: c.phone,
+                                    },
+                                })
+                            }
+                        >
+
                             <View style={styles.avatar}>
                                 <Text style={styles.avatarInitial}>
                                     {c.name.charAt(0).toUpperCase()}
