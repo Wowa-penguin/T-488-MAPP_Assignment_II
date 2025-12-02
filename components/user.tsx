@@ -7,6 +7,7 @@ import {
     Text,
     TouchableOpacity,
     View,
+    Image,
 } from 'react-native';
 import { FileContact } from '../models/contact';
 
@@ -50,10 +51,14 @@ export default function User({ contacts }: UserProps) {
                             onLongPress={() => handleCall(c.phone)}
                         >
                             <View style={styles.avatar}>
-                                <Text style={styles.avatarInitial}>
+                                {c.photo ? (
+                                    <Image source={{ uri: c.photo }} style={styles.avatarImage} />
+                                ) : (
+                                    <Text style={styles.avatarInitial}>
                                     {c.name.charAt(0).toUpperCase()}
-                                </Text>
-                            </View>
+                                    </Text>
+                                )}
+                                </View>
                             <Text style={styles.name}>{c.name}</Text>
                         </TouchableOpacity>
                     ))}
@@ -155,4 +160,10 @@ const styles = StyleSheet.create({
     name: {
         fontSize: 16,
     },
+    avatarImage: {
+        width: 40,
+        height: 40,
+        borderRadius: 20,
+    },
+    
 });
