@@ -1,37 +1,37 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { useLocalSearchParams } from 'expo-router';
+import * as Contacts from "expo-contacts";
+import { useEffect } from "react";
+import { StyleSheet, Text, View } from "react-native";
 
-export default function UserDetailScreen() {
-    const { name, phone } = useLocalSearchParams<{
-        name?: string;
-        phone?: string;
-    }>();
+export default function App() {
+  useEffect(() => {
+    (async () => {
+      const { status } = await Contacts.requestPermissionsAsync();
+      if (status === "granted") {
+        const { data } = await Contacts.getContactsAsync({
+          fields: [Contacts.Fields.Emails],
+        });
 
-    return (
-        <View style={styles.container}>
-            <Text style={styles.label}>Name</Text>
-            <Text style={styles.value}>{name}</Text>
+        if (data.length > 0) {
+          const contact = data[0];
+          console.log(contact);
+        }
+      }
+    })();
+  }, []);
 
-            <Text style={styles.label}>Phone</Text>
-            <Text style={styles.value}>{phone}</Text>
-        </View>
-    );
+  return (
+    <View style={styles.container}>
+      <Text>Contacts Module Example</Text>
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        padding: 24,
-        backgroundColor: '#fff',
-    },
-    label: {
-        fontSize: 14,
-        color: '#8e8e93',
-        marginTop: 16,
-        marginBottom: 4,
-    },
-    value: { 
-        fontSize: 18,
-    },
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
+  },
 });
+
