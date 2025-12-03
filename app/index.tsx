@@ -15,7 +15,6 @@ export default function Index() {
     const router = useRouter();
     const [search, setSearch] = useState('');
     const [isLoading, setIsLoading] = useState(true);
-    // const [contacts, setContacts] = useState<FileContact[]>([]);
     const { contacts, setContacts } = useData();
 
     let filteredContacts: FileContact[] | any;
@@ -89,7 +88,8 @@ const styles = StyleSheet.create({
         width: 52,
         height: 52,
         borderRadius: 26,
-        backgroundColor: '#c9c5c5',
+
+        backgroundColor: '#b4b4b4ff',
         alignItems: 'center',
         justifyContent: 'center',
         shadowColor: '#000',

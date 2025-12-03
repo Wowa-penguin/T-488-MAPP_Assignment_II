@@ -34,7 +34,7 @@ export default function UserDetailScreen() {
             try {
                 const user = await file.getContactInfo(params.fileUri);
                 if (!user) {
-                    Alert.alert('Error'); // todo: fix
+                    Alert.alert('Not a valid contact uri');
                     return;
                 }
 

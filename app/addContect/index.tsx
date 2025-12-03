@@ -1,3 +1,4 @@
+import globalStyles from '@/util/globalStyles';
 import * as ImagePicker from 'expo-image-picker';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
@@ -13,7 +14,7 @@ import {
 } from 'react-native';
 import * as file from '../../util/fileManager';
 
-const AddContact = () => {
+const Index = () => {
     const router = useRouter();
     const [name, setName] = useState('');
     const [phone, setPhone] = useState('');
@@ -87,18 +88,38 @@ const AddContact = () => {
 
     return (
         <View style={styles.container}>
+            <TouchableOpacity
+                style={[
+                    globalStyles.button,
+                    styles.topButtons,
+                    {
+                        width: 40,
+                        height: 40,
+                    },
+                ]}
+                onPress={() => router.back()}
+            >
+                <Image
+                    source={require('@/assets/images/back_arrow_icon.png')}
+                    style={{ width: 30, height: 30 }}
+                />
+            </TouchableOpacity>
+
             <Text style={styles.title}>Add Contact</Text>
 
             <View style={styles.photoContainer}>
                 {photo ? (
-                    <Image source={{ uri: photo }} style={styles.photo} />
+                    <Image source={{ uri: photo }} style={globalStyles.photo} />
                 ) : (
-                    <View style={styles.photoPlaceholder}>
+                    <View style={globalStyles.photoPlaceholder}>
                         <Text style={styles.photoInitial}>+</Text>
                     </View>
                 )}
 
-                <TouchableOpacity onPress={handleAddPhoto}>
+                <TouchableOpacity
+                    onPress={handleAddPhoto}
+                    style={[globalStyles.button, { padding: 4 }]}
+                >
                     <Text style={styles.photoButtonText}>Add photo</Text>
                 </TouchableOpacity>
             </View>
@@ -124,7 +145,18 @@ const AddContact = () => {
                 />
             </View>
 
-            <Button title="Save contact" onPress={handleSave} />
+            <View
+                style={[
+                    globalStyles.button,
+                    { width: '60%', alignSelf: 'center' },
+                ]}
+            >
+                <Button
+                    title="Save contact"
+                    color={'#fff'}
+                    onPress={handleSave}
+                />
+            </View>
         </View>
     );
 };
@@ -145,29 +177,13 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginBottom: 24,
     },
-    photo: {
-        width: 80,
-        height: 80,
-        borderRadius: 40,
-        marginBottom: 8,
-    },
-    photoPlaceholder: {
-        width: 80,
-        height: 80,
-        borderRadius: 40,
-        backgroundColor: '#d1d1d6',
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginBottom: 8,
-    },
     photoInitial: {
         color: '#fff',
-        fontSize: 36,
+        fontSize: 50,
         fontWeight: '600',
-        marginTop: -4,
     },
     photoButtonText: {
-        color: '#007AFF',
+        color: '#ffffffff',
         fontSize: 16,
     },
     field: {
@@ -186,6 +202,11 @@ const styles = StyleSheet.create({
         paddingVertical: 8,
         fontSize: 16,
     },
+    topButtons: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        alignContent: 'center',
+    },
 });
 
-export default AddContact;
+export default Index;
