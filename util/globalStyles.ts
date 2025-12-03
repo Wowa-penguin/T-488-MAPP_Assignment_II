@@ -36,4 +36,7 @@ export default StyleSheet.create({
     useFont: {
         fontFamily: 'RobotoMono-Regular',
     },
+    useFontBold: {
+        fontFamily: 'RobotoMono-Bold',
+    },
 });
