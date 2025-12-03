@@ -1,4 +1,5 @@
-import { FileContact } from '@/models/contact';
+import EditContact from '@/components/contactInfo';
+import globalStyles from '@/util/globalStyles';
 import * as ImagePicker from 'expo-image-picker';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import React, { useEffect, useState } from 'react';
@@ -10,6 +11,7 @@ import {
     StyleSheet,
     Text,
     TextInput,
+    TouchableOpacity,
     View,
 } from 'react-native';
 import * as file from '../../util/fileManager';
@@ -21,10 +23,10 @@ export default function UserDetailScreen() {
         fileUri: string;
     }>();
 
-    const [user, setUser] = useState<FileContact>();
     const [name, setName] = useState('');
     const [phone, setPhone] = useState('');
     const [photoUri, setPhotoUri] = useState('');
+    const [isEdit, setIsEdit] = useState(false);
 
     useEffect(() => {
         const init = async () => {
@@ -34,7 +36,7 @@ export default function UserDetailScreen() {
                     Alert.alert('Error'); // todo: fix
                     return;
                 }
-                setUser(user);
+
                 setName(user.name);
                 setPhone(user.phone);
                 setPhotoUri(user.photo);
@@ -95,7 +97,7 @@ export default function UserDetailScreen() {
     };
 
     const handleSave = async () => {
-        if (!user?.fileName) {
+        if (!params.fileUri) {
             Alert.alert('Error'); // todo: fix
             return;
         }
@@ -110,65 +112,125 @@ export default function UserDetailScreen() {
 
         try {
             await file.updateContactFile(
-                user.fileName,
+                params.fileUri,
                 trimmedName,
                 trimmedPhone,
                 photoUri
             );
             router.back();
         } catch (err) {
-            console.error('Failed to save contact', err);
+            console.error(err);
             Alert.alert('Error', 'Failed to save contact.');
         }
     };
 
     return (
-        <View style={styles.container}>
-            <View style={{ alignItems: 'center', marginBottom: 20 }}>
-                {photoUri ? (
-                    <Image source={{ uri: photoUri }} style={styles.photo} />
-                ) : (
-                    <View style={styles.photoPlaceholder}>
-                        <Text style={{ fontSize: 40, color: '#888' }}>
-                            {name ? name[0].toUpperCase() : '?'}
-                        </Text>
+        <View>
+            <View style={styles.topButtonsContainer}>
+                <TouchableOpacity
+                    style={[
+                        globalStyles.button,
+                        styles.topButtons,
+                        {
+                            width: 30,
+                            height: 30,
+                        },
+                    ]}
+                    onPress={() => router.back()}
+                >
+                    <Text style={{ fontSize: 20, color: '#fff' }}>{'<'}</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                    style={[
+                        globalStyles.button,
+                        styles.topButtons,
+                        {
+                            width: 50,
+                            height: 30,
+                        },
+                    ]}
+                    onPress={() => setIsEdit(!isEdit)}
+                >
+                    <Text style={{ color: '#fff', fontSize: 20 }}>Edit</Text>
+                </TouchableOpacity>
+            </View>
+            {isEdit ? (
+                <View style={styles.container}>
+                    <View style={{ alignItems: 'center', marginBottom: 20 }}>
+                        {photoUri ? (
+                            <Image
+                                source={{ uri: photoUri }}
+                                style={globalStyles.photo}
+                            />
+                        ) : (
+                            <View style={globalStyles.photoPlaceholder}>
+                                <Text style={{ fontSize: 40, color: '#888' }}>
+                                    {name ? name[0].toUpperCase() : '?'}
+                                </Text>
+                            </View>
+                        )}
+                        <View style={globalStyles.button}>
+                            <Button
+                                title="Change photo"
+                                color={'#fff'}
+                                onPress={handleAddPhoto}
+                            />
+                        </View>
                     </View>
-                )}
 
-                <Button title="Change photo" onPress={handleAddPhoto} />
-            </View>
+                    <Text style={styles.label}>Name</Text>
+                    <TextInput
+                        style={styles.input}
+                        value={name}
+                        onChangeText={setName}
+                        placeholder="Enter name"
+                    />
 
-            <Text style={styles.label}>Name</Text>
-            <TextInput
-                style={styles.input}
-                value={name}
-                onChangeText={setName}
-                placeholder="Enter name"
-            />
+                    <Text style={styles.label}>Phone</Text>
+                    <TextInput
+                        style={styles.input}
+                        value={phone}
+                        onChangeText={setPhone}
+                        placeholder="Enter phone number"
+                        keyboardType="phone-pad"
+                    />
 
-            <Text style={styles.label}>Phone</Text>
-            <TextInput
-                style={styles.input}
-                value={phone}
-                onChangeText={setPhone}
-                placeholder="Enter phone number"
-                keyboardType="phone-pad"
-            />
-            <Button
-                title="Call"
-                onPress={() => Linking.openURL(`tel:${phone}`)}
-            />
-
-            <View style={{ marginTop: 32 }}>
-                <Button title="Save" onPress={handleSave} />
-            </View>
+                    <TouchableOpacity
+                        style={[globalStyles.call, { marginTop: 25 }]}
+                        onPress={() => Linking.openURL(`tel:${phone}`)}
+                    >
+                        <Image
+                            source={require('@/assets/images/phone_icon.png')}
+                            style={globalStyles.phoneIcone}
+                        />
+                    </TouchableOpacity>
+                    <View
+                        style={[
+                            globalStyles.button,
+                            {
+                                width: '25%',
+                                alignSelf: 'center',
+                                marginTop: 10,
+                            },
+                        ]}
+                    >
+                        <Button
+                            title="Save"
+                            color={'#fff'}
+                            onPress={handleSave}
+                        />
+                    </View>
+                </View>
+            ) : (
+                <EditContact name={name} phone={phone} photoUri={photoUri} />
+            )}
         </View>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
         padding: 24,
         backgroundColor: '#fff',
     },
@@ -184,20 +246,15 @@ const styles = StyleSheet.create({
         borderBottomWidth: StyleSheet.hairlineWidth,
         borderBottomColor: '#ccc',
     },
-    photo: {
-        width: 120,
-        height: 120,
-        borderRadius: 60,
-        marginBottom: 10,
-    },
-
-    photoPlaceholder: {
-        width: 120,
-        height: 120,
-        borderRadius: 60,
-        backgroundColor: '#ddd',
+    topButtonsContainer: {
+        justifyContent: 'space-around',
+        gap: 60,
         alignItems: 'center',
-        justifyContent: 'center',
-        marginBottom: 10,
+        flexDirection: 'row',
+        padding: 10,
+    },
+    topButtons: {
+        alignItems: 'center',
+        alignContent: 'center',
     },
 });

@@ -122,14 +122,7 @@ const updateContactFile = async (
     phone: string,
     photo: string
 ): Promise<FileContact | null> => {
-    const contactsDir = new Directory(Paths.document, 'contacts');
-
-    if (!contactsDir.exists) {
-        console.warn('Contacts directory does not exist');
-        return null;
-    }
-
-    const file = new File(contactsDir, fileName);
+    const file = new File(fileName);
 
     if (!file.exists) {
         console.warn('Contact file not found:', fileName);

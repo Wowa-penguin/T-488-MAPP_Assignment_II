@@ -43,9 +43,6 @@ export default function User({ contacts }: UserProps) {
                                     pathname: '/user',
                                     params: {
                                         fileUri: c.uri,
-                                        // name: c.name,
-                                        // phone: c.phone,
-                                        // fileName: c.fileName,
                                     },
                                 })
                             }
