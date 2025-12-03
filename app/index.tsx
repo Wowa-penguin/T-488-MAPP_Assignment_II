@@ -2,6 +2,7 @@ import Search from '@/components/search';
 import User from '@/components/user';
 import { FileContact } from '@/models/contact';
 import GetContacts from '@/util/getContacts';
+import { useData } from '@/util/useData';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
 import React, { useEffect, useState } from 'react';
@@ -14,7 +15,10 @@ export default function Index() {
     const router = useRouter();
     const [search, setSearch] = useState('');
     const [isLoading, setIsLoading] = useState(true);
-    const [contacts, setContacts] = useState<FileContact[]>([]);
+    // const [contacts, setContacts] = useState<FileContact[]>([]);
+    const { contacts, setContacts } = useData();
+
+    let filteredContacts: FileContact[] | any;
 
     useEffect(() => {
         const init = async () => {
@@ -31,7 +35,6 @@ export default function Index() {
                     }
                     await AsyncStorage.setItem(CONTACTS_IMPORTED_KEY, 'true');
                 }
-
                 const allUsers = await file.getAllContacts();
                 setContacts(allUsers);
             } catch (err) {
@@ -42,11 +45,15 @@ export default function Index() {
         };
 
         init();
-    }, []);
+    }, [setContacts]);
 
-    const filteredContacts = contacts.filter((c) =>
-        c.name.toLowerCase().includes(search.toLowerCase())
-    );
+    if (!contacts) {
+        filteredContacts = [];
+    } else {
+        filteredContacts = contacts.filter((c) =>
+            c.name.toLowerCase().includes(search.toLowerCase())
+        );
+    }
 
     return (
         <View style={styles.container}>
