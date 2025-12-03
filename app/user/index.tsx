@@ -1,6 +1,7 @@
 import EditContact from '@/components/contactInfo';
 import globalStyles from '@/util/globalStyles';
 import * as ImagePicker from 'expo-image-picker';
+
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import {
@@ -132,13 +133,16 @@ export default function UserDetailScreen() {
                         globalStyles.button,
                         styles.topButtons,
                         {
-                            width: 30,
-                            height: 30,
+                            width: 40,
+                            height: 40,
                         },
                     ]}
                     onPress={() => router.back()}
                 >
-                    <Text style={{ fontSize: 20, color: '#fff' }}>{'<'}</Text>
+                    <Image
+                        source={require('@/assets/images/back_arrow_icon.png')}
+                        style={{ width: 30, height: 30 }}
+                    />
                 </TouchableOpacity>
 
                 <TouchableOpacity
@@ -147,12 +151,14 @@ export default function UserDetailScreen() {
                         styles.topButtons,
                         {
                             width: 50,
-                            height: 30,
+                            height: 40,
                         },
                     ]}
                     onPress={() => setIsEdit(!isEdit)}
                 >
-                    <Text style={{ color: '#fff', fontSize: 20 }}>Edit</Text>
+                    <Text style={{ color: '#ffffffff', fontSize: 20 }}>
+                        Edit
+                    </Text>
                 </TouchableOpacity>
             </View>
             {isEdit ? (
@@ -255,6 +261,7 @@ const styles = StyleSheet.create({
     },
     topButtons: {
         alignItems: 'center',
+        justifyContent: 'center',
         alignContent: 'center',
     },
 });
