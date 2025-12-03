@@ -26,7 +26,12 @@ const ContactInfo = ({ name, phone, photoUri }: ContactInfoProp) => {
                     />
                 ) : (
                     <View style={globalStyles.photoPlaceholder}>
-                        <Text style={{ fontSize: 40, color: '#888' }}>
+                        <Text
+                            style={[
+                                { fontSize: 40, color: '#888' },
+                                globalStyles.useFont,
+                            ]}
+                        >
                             {name ? name[0].toUpperCase() : '?'}
                         </Text>
                     </View>
@@ -34,12 +39,26 @@ const ContactInfo = ({ name, phone, photoUri }: ContactInfoProp) => {
             </View>
 
             <View style={{ alignSelf: 'center' }}>
-                <Text style={{ fontSize: 30, fontWeight: 'bold' }}>{name}</Text>
+                <Text
+                    style={[
+                        { fontSize: 30, fontWeight: 'bold' },
+                        globalStyles.useFont,
+                    ]}
+                >
+                    {name}
+                </Text>
             </View>
 
             <View>
-                <Text style={styles.label}>Phone</Text>
-                <Text style={{ fontSize: 25, marginLeft: '5%' }}>{phone}</Text>
+                <Text style={[styles.label, globalStyles.useFont]}>Phone</Text>
+                <Text
+                    style={[
+                        { fontSize: 25, marginLeft: '5%' },
+                        globalStyles.useFont,
+                    ]}
+                >
+                    {phone}
+                </Text>
             </View>
 
             <TouchableOpacity

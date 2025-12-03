@@ -2,9 +2,12 @@ import Search from '@/components/search';
 import User from '@/components/user';
 import { FileContact } from '@/models/contact';
 import GetContacts from '@/util/getContacts';
+import globalStyles from '@/util/globalStyles';
 import { useData } from '@/util/useData';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useFonts } from 'expo-font';
 import { useRouter } from 'expo-router';
+import * as SplashScreen from 'expo-splash-screen';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import * as file from '../util/fileManager';
@@ -16,10 +19,17 @@ export default function Index() {
     const [search, setSearch] = useState('');
     const [isLoading, setIsLoading] = useState(true);
     const { contacts, setContacts } = useData();
+    const [loaded] = useFonts({
+        'RobotoMono-Regular': require('@/assets/fonts/RobotoMono-Regular.ttf'),
+        'RobotoMono-Bold': require('@/assets/fonts/RobotoMono-Bold.ttf'),
+    });
 
     let filteredContacts: FileContact[] | any;
 
     useEffect(() => {
+        if (loaded) {
+            SplashScreen.hideAsync();
+        }
         const init = async () => {
             try {
                 const importedFlag = await AsyncStorage.getItem(
@@ -44,7 +54,11 @@ export default function Index() {
         };
 
         init();
-    }, [setContacts]);
+    }, [setContacts, loaded]);
+
+    if (!loaded) {
+        return null;
+    }
 
     if (!contacts) {
         filteredContacts = [];
@@ -66,7 +80,11 @@ export default function Index() {
                         style={styles.addButton}
                         onPress={() => router.push('/addContect')}
                     >
-                        <Text style={styles.addButtonText}>+</Text>
+                        <Text
+                            style={[styles.addButtonText, globalStyles.useFont]}
+                        >
+                            +
+                        </Text>
                     </TouchableOpacity>
                 </>
             )}
@@ -98,6 +116,7 @@ const styles = StyleSheet.create({
         marginBottom: 30,
     },
     addButtonText: {
+        fontFamily: 'RobotoMono-Regular',
         color: '#fff',
         fontSize: 30,
     },

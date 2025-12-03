@@ -105,14 +105,20 @@ const Index = () => {
                 />
             </TouchableOpacity>
 
-            <Text style={styles.title}>Add Contact</Text>
+            <Text style={[styles.title, globalStyles.useFont]}>
+                Add Contact
+            </Text>
 
             <View style={styles.photoContainer}>
                 {photo ? (
                     <Image source={{ uri: photo }} style={globalStyles.photo} />
                 ) : (
                     <View style={globalStyles.photoPlaceholder}>
-                        <Text style={styles.photoInitial}>+</Text>
+                        <Text
+                            style={[styles.photoInitial, globalStyles.useFont]}
+                        >
+                            +
+                        </Text>
                     </View>
                 )}
 
@@ -120,12 +126,16 @@ const Index = () => {
                     onPress={handleAddPhoto}
                     style={[globalStyles.button, { padding: 4 }]}
                 >
-                    <Text style={styles.photoButtonText}>Add photo</Text>
+                    <Text
+                        style={[styles.photoButtonText, globalStyles.useFont]}
+                    >
+                        Add photo
+                    </Text>
                 </TouchableOpacity>
             </View>
 
             <View style={styles.field}>
-                <Text style={styles.label}>Name</Text>
+                <Text style={[styles.label, globalStyles.useFont]}>Name</Text>
                 <TextInput
                     value={name}
                     onChangeText={setName}
@@ -135,7 +145,9 @@ const Index = () => {
             </View>
 
             <View style={styles.field}>
-                <Text style={styles.label}>Phone number</Text>
+                <Text style={[styles.label, globalStyles.useFont]}>
+                    Phone number
+                </Text>
                 <TextInput
                     value={phone}
                     onChangeText={setPhone}

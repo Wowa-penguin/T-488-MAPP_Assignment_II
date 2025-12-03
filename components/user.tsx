@@ -1,3 +1,4 @@
+import globalStyles from '@/util/globalStyles';
 import { useRouter } from 'expo-router';
 import React from 'react';
 import {
@@ -31,7 +32,11 @@ export default function User({ contacts }: UserProps) {
             {Object.keys(grouped).map((letter) => (
                 <View key={letter}>
                     <View style={styles.sectionHeader}>
-                        <Text style={styles.sectionText}>{letter}</Text>
+                        <Text
+                            style={[styles.sectionText, globalStyles.useFont]}
+                        >
+                            {letter}
+                        </Text>
                     </View>
 
                     {grouped[letter].map((c, index) => (
@@ -60,7 +65,9 @@ export default function User({ contacts }: UserProps) {
                                     </Text>
                                 )}
                             </View>
-                            <Text style={styles.name}>{c.name}</Text>
+                            <Text style={[styles.name, globalStyles.useFont]}>
+                                {c.name}
+                            </Text>
                         </TouchableOpacity>
                     ))}
                 </View>

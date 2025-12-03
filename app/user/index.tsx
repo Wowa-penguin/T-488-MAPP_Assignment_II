@@ -150,13 +150,18 @@ export default function UserDetailScreen() {
                         globalStyles.button,
                         styles.topButtons,
                         {
-                            width: 50,
+                            width: 60,
                             height: 40,
                         },
                     ]}
                     onPress={() => setIsEdit(!isEdit)}
                 >
-                    <Text style={{ color: '#ffffffff', fontSize: 20 }}>
+                    <Text
+                        style={[
+                            { color: '#ffffffff', fontSize: 20 },
+                            globalStyles.useFont,
+                        ]}
+                    >
                         Edit
                     </Text>
                 </TouchableOpacity>
@@ -171,7 +176,12 @@ export default function UserDetailScreen() {
                             />
                         ) : (
                             <View style={globalStyles.photoPlaceholder}>
-                                <Text style={{ fontSize: 40, color: '#888' }}>
+                                <Text
+                                    style={[
+                                        { fontSize: 40, color: '#888' },
+                                        globalStyles.useFont,
+                                    ]}
+                                >
                                     {name ? name[0].toUpperCase() : '?'}
                                 </Text>
                             </View>
@@ -185,7 +195,9 @@ export default function UserDetailScreen() {
                         </View>
                     </View>
 
-                    <Text style={styles.label}>Name</Text>
+                    <Text style={[styles.label, globalStyles.useFont]}>
+                        Name
+                    </Text>
                     <TextInput
                         style={styles.input}
                         value={name}
@@ -193,7 +205,9 @@ export default function UserDetailScreen() {
                         placeholder="Enter name"
                     />
 
-                    <Text style={styles.label}>Phone</Text>
+                    <Text style={[styles.label, globalStyles.useFont]}>
+                        Phone
+                    </Text>
                     <TextInput
                         style={styles.input}
                         value={phone}

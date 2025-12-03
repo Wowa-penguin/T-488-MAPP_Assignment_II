@@ -33,4 +33,7 @@ export default StyleSheet.create({
         borderColor: '#707070ff',
         backgroundColor: '#b4b4b4ff',
     },
+    useFont: {
+        fontFamily: 'RobotoMono-Regular',
+    },
 });
