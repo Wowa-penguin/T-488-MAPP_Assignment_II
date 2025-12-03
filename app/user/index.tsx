@@ -99,7 +99,7 @@ export default function UserDetailScreen() {
 
     const handleSave = async () => {
         if (!params.fileUri) {
-            Alert.alert('Error'); // todo: fix
+            Alert.alert('Error in the file uri');
             return;
         }
 
