@@ -90,8 +90,7 @@ const getContactInfo = async (
     const file = new File(fileUri);
 
     if (!file.exists) {
-        console.error('Error in getContactInfo');
-        return;
+        throw new Error('File does not exist');
     }
 
     try {

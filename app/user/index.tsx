@@ -43,8 +43,8 @@ export default function UserDetailScreen() {
                 setName(user.name);
                 setPhone(user.phone);
                 setPhotoUri(user.photo);
-            } catch (err) {
-                console.error(err);
+            } catch {
+                Alert.alert('Error', 'File does not exist');
             }
         };
 
