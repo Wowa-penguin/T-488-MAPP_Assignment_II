@@ -8,7 +8,10 @@ import {
     Alert,
     Button,
     Image,
+    KeyboardAvoidingView,
     Linking,
+    Platform,
+    ScrollView,
     StyleSheet,
     Text,
     TextInput,
@@ -126,127 +129,144 @@ export default function UserDetailScreen() {
     };
 
     return (
-        <View>
-            <View style={styles.topButtonsContainer}>
-                <TouchableOpacity
-                    style={[
-                        globalStyles.button,
-                        styles.topButtons,
-                        {
-                            width: 40,
-                            height: 40,
-                        },
-                    ]}
-                    onPress={() => router.back()}
-                >
-                    <Image
-                        source={require('@/assets/images/back_arrow_icon.png')}
-                        style={{ width: 30, height: 30 }}
-                    />
-                </TouchableOpacity>
-
-                <TouchableOpacity
-                    style={[
-                        globalStyles.button,
-                        styles.topButtons,
-                        {
-                            width: 60,
-                            height: 40,
-                        },
-                    ]}
-                    onPress={() => setIsEdit(!isEdit)}
-                >
-                    <Text
+    <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        keyboardVerticalOffset={80} // tweak if header overlaps
+    >
+        <ScrollView
+            contentContainerStyle={{ flexGrow: 1 }}
+            keyboardShouldPersistTaps="handled"
+        >
+            <View style={{ flex: 1 }}>
+                <View style={styles.topButtonsContainer}>
+                    <TouchableOpacity
                         style={[
-                            { color: '#ffffffff', fontSize: 20 },
-                            globalStyles.useFont,
+                            globalStyles.button,
+                            styles.topButtons,
+                            {
+                                width: 40,
+                                height: 40,
+                            },
                         ]}
+                        onPress={() => router.back()}
                     >
-                        Edit
-                    </Text>
-                </TouchableOpacity>
-            </View>
-            {isEdit ? (
-                <View style={styles.container}>
-                    <View style={{ alignItems: 'center', marginBottom: 20 }}>
-                        {photoUri ? (
-                            <Image
-                                source={{ uri: photoUri }}
-                                style={globalStyles.photo}
-                            />
-                        ) : (
-                            <View style={globalStyles.photoPlaceholder}>
-                                <Text
-                                    style={[
-                                        { fontSize: 40, color: '#888' },
-                                        globalStyles.useFont,
-                                    ]}
-                                >
-                                    {name ? name[0].toUpperCase() : '?'}
-                                </Text>
+                        <Image
+                            source={require('@/assets/images/back_arrow_icon.png')}
+                            style={{ width: 30, height: 30 }}
+                        />
+                    </TouchableOpacity>
+
+                    <TouchableOpacity
+                        style={[
+                            globalStyles.button,
+                            styles.topButtons,
+                            {
+                                width: 60,
+                                height: 40,
+                            },
+                        ]}
+                        onPress={() => setIsEdit(!isEdit)}
+                    >
+                        <Text
+                            style={[
+                                { color: '#ffffffff', fontSize: 20 },
+                                globalStyles.useFont,
+                            ]}
+                        >
+                            Edit
+                        </Text>
+                    </TouchableOpacity>
+                </View>
+
+                {isEdit ? (
+                    <View style={styles.container}>
+                        <View style={{ alignItems: 'center', marginBottom: 20 }}>
+                            {photoUri ? (
+                                <Image
+                                    source={{ uri: photoUri }}
+                                    style={globalStyles.photo}
+                                />
+                            ) : (
+                                <View style={globalStyles.photoPlaceholder}>
+                                    <Text
+                                        style={[
+                                            { fontSize: 40, color: '#888' },
+                                            globalStyles.useFont,
+                                        ]}
+                                    >
+                                        {name ? name[0].toUpperCase() : '?'}
+                                    </Text>
+                                </View>
+                            )}
+                            <View style={globalStyles.button}>
+                                <Button
+                                    title="Change photo"
+                                    color={'#fff'}
+                                    onPress={handleAddPhoto}
+                                />
                             </View>
-                        )}
-                        <View style={globalStyles.button}>
+                        </View>
+
+                        <Text style={[styles.label, globalStyles.useFont]}>
+                            Name
+                        </Text>
+                        <TextInput
+                            style={styles.input}
+                            value={name}
+                            onChangeText={setName}
+                            placeholder="Enter name"
+                        />
+
+                        <Text style={[styles.label, globalStyles.useFont]}>
+                            Phone
+                        </Text>
+                        <TextInput
+                            style={styles.input}
+                            value={phone}
+                            onChangeText={setPhone}
+                            placeholder="Enter phone number"
+                            keyboardType="phone-pad"
+                        />
+
+                        <TouchableOpacity
+                            style={[globalStyles.call, { marginTop: 25 }]}
+                            onPress={() => Linking.openURL(`tel:${phone}`)}
+                        >
+                            <Image
+                                source={require('@/assets/images/phone_icon.png')}
+                                style={globalStyles.phoneIcone}
+                            />
+                        </TouchableOpacity>
+                        <View
+                            style={[
+                                globalStyles.button,
+                                {
+                                    width: '25%',
+                                    alignSelf: 'center',
+                                    marginTop: 10,
+                                },
+                            ]}
+                        >
                             <Button
-                                title="Change photo"
+                                title="Save"
                                 color={'#fff'}
-                                onPress={handleAddPhoto}
+                                onPress={handleSave}
                             />
                         </View>
                     </View>
-
-                    <Text style={[styles.label, globalStyles.useFont]}>
-                        Name
-                    </Text>
-                    <TextInput
-                        style={styles.input}
-                        value={name}
-                        onChangeText={setName}
-                        placeholder="Enter name"
+                ) : (
+                    <EditContact
+                        name={name}
+                        phone={phone}
+                        photoUri={photoUri}
                     />
+                )}
+            </View>
+        </ScrollView>
+    </KeyboardAvoidingView>
+);
 
-                    <Text style={[styles.label, globalStyles.useFont]}>
-                        Phone
-                    </Text>
-                    <TextInput
-                        style={styles.input}
-                        value={phone}
-                        onChangeText={setPhone}
-                        placeholder="Enter phone number"
-                        keyboardType="phone-pad"
-                    />
-
-                    <TouchableOpacity
-                        style={[globalStyles.call, { marginTop: 25 }]}
-                        onPress={() => Linking.openURL(`tel:${phone}`)}
-                    >
-                        <Image
-                            source={require('@/assets/images/phone_icon.png')}
-                            style={globalStyles.phoneIcone}
-                        />
-                    </TouchableOpacity>
-                    <View
-                        style={[
-                            globalStyles.button,
-                            {
-                                width: '25%',
-                                alignSelf: 'center',
-                                marginTop: 10,
-                            },
-                        ]}
-                    >
-                        <Button
-                            title="Save"
-                            color={'#fff'}
-                            onPress={handleSave}
-                        />
-                    </View>
-                </View>
-            ) : (
-                <EditContact name={name} phone={phone} photoUri={photoUri} />
-            )}
-        </View>
-    );
 }
 
 const styles = StyleSheet.create({
