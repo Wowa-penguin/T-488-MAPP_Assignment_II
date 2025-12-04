@@ -203,13 +203,25 @@ export default function UserDetailScreen() {
                                         </Text>
                                     </View>
                                 )}
-                                <View style={globalStyles.button}>
-                                    <Button
-                                        title="Change photo"
-                                        color={'#fff'}
-                                        onPress={handleAddPhoto}
-                                    />
-                                </View>
+                                <TouchableOpacity
+                                    style={[
+                                        globalStyles.button,
+                                        {
+                                            width: '40%',
+                                            alignItems: 'center',
+                                            padding: 8,
+                                        },
+                                    ]}
+                                >
+                                    <Text
+                                        style={[
+                                            globalStyles.useFont,
+                                            { fontSize: 16, color: '#fff' },
+                                        ]}
+                                    >
+                                        Change Photo
+                                    </Text>
+                                </TouchableOpacity>
                             </View>
 
                             <Text style={[styles.label, globalStyles.useFont]}>
@@ -242,22 +254,23 @@ export default function UserDetailScreen() {
                                     style={globalStyles.phoneIcone}
                                 />
                             </TouchableOpacity>
-                            <View
+                            <TouchableOpacity
                                 style={[
                                     globalStyles.button,
                                     {
-                                        width: '25%',
+                                        width: '30%',
                                         alignSelf: 'center',
-                                        marginTop: 10,
+                                        marginTop: 15,
+                                        alignItems: 'center',
+                                        paddingVertical: 10,
                                     },
                                 ]}
+                                onPress={handleSave}
                             >
-                                <Button
-                                    title="Save"
-                                    color={'#fff'}
-                                    onPress={handleSave}
-                                />
-                            </View>
+                                <Text style={{ color: '#fff', fontSize: 16 }}>
+                                    Save
+                                </Text>
+                            </TouchableOpacity>
                         </View>
                     ) : (
                         <EditContact
