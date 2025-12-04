@@ -1,7 +1,6 @@
 import EditContact from '@/components/contactInfo';
 import globalStyles from '@/util/globalStyles';
 import * as ImagePicker from 'expo-image-picker';
-
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import {
@@ -131,7 +130,7 @@ export default function UserDetailScreen() {
         <KeyboardAvoidingView
             style={{ flex: 1 }}
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-            keyboardVerticalOffset={80} // tweak if header overlaps
+            keyboardVerticalOffset={80}
         >
             <ScrollView
                 contentContainerStyle={{ flexGrow: 1 }}

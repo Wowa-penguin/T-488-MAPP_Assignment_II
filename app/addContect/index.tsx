@@ -5,6 +5,8 @@ import React, { useState } from 'react';
 import {
     Alert,
     Image,
+    KeyboardAvoidingView,
+    Platform,
     ScrollView,
     StyleSheet,
     Text,
@@ -87,93 +89,116 @@ const Index = () => {
     };
 
     return (
-        <ScrollView style={styles.container}>
-            <TouchableOpacity
-                style={[
-                    globalStyles.button,
-                    styles.topButtons,
-                    {
-                        width: 40,
-                        height: 40,
-                    },
-                ]}
-                onPress={() => router.back()}
+        <KeyboardAvoidingView
+            style={{ flex: 1 }}
+            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+            keyboardVerticalOffset={80}
+        >
+            <ScrollView
+                style={styles.container}
+                contentContainerStyle={{ flexGrow: 1 }}
+                keyboardShouldPersistTaps="handled"
             >
-                <Image
-                    source={require('@/assets/images/back_arrow_icon.png')}
-                    style={{ width: 30, height: 30 }}
-                />
-            </TouchableOpacity>
+                <TouchableOpacity
+                    style={[
+                        globalStyles.button,
+                        styles.topButtons,
+                        {
+                            width: 40,
+                            height: 40,
+                        },
+                    ]}
+                    onPress={() => router.back()}
+                >
+                    <Image
+                        source={require('@/assets/images/back_arrow_icon.png')}
+                        style={{ width: 30, height: 30 }}
+                    />
+                </TouchableOpacity>
 
-            <Text style={[styles.title, globalStyles.useFont]}>
-                Add Contact
-            </Text>
+                <Text style={[styles.title, globalStyles.useFont]}>
+                    Add Contact
+                </Text>
 
-            <View style={styles.photoContainer}>
-                {photo ? (
-                    <Image source={{ uri: photo }} style={globalStyles.photo} />
-                ) : (
-                    <View style={globalStyles.photoPlaceholder}>
+                <View style={styles.photoContainer}>
+                    {photo ? (
+                        <Image
+                            source={{ uri: photo }}
+                            style={globalStyles.photo}
+                        />
+                    ) : (
+                        <View style={globalStyles.photoPlaceholder}>
+                            <Text
+                                style={[
+                                    styles.photoInitial,
+                                    globalStyles.useFont,
+                                ]}
+                            >
+                                +
+                            </Text>
+                        </View>
+                    )}
+
+                    <TouchableOpacity
+                        onPress={handleAddPhoto}
+                        style={[globalStyles.button, { padding: 4 }]}
+                    >
                         <Text
-                            style={[styles.photoInitial, globalStyles.useFont]}
+                            style={[
+                                styles.photoButtonText,
+                                globalStyles.useFont,
+                            ]}
                         >
-                            +
+                            Add photo
                         </Text>
-                    </View>
-                )}
+                    </TouchableOpacity>
+                </View>
+
+                <View style={styles.field}>
+                    <Text style={[styles.label, globalStyles.useFont]}>
+                        Name
+                    </Text>
+                    <TextInput
+                        value={name}
+                        onChangeText={setName}
+                        placeholder="Name"
+                        style={styles.input}
+                    />
+                </View>
+
+                <View style={styles.field}>
+                    <Text style={[styles.label, globalStyles.useFont]}>
+                        Phone number
+                    </Text>
+                    <TextInput
+                        value={phone}
+                        onChangeText={setPhone}
+                        placeholder="Phone"
+                        keyboardType="phone-pad"
+                        style={styles.input}
+                    />
+                </View>
 
                 <TouchableOpacity
-                    onPress={handleAddPhoto}
-                    style={[globalStyles.button, { padding: 4 }]}
+                    style={[
+                        globalStyles.button,
+                        {
+                            width: '50%',
+                            alignSelf: 'center',
+                            alignItems: 'center',
+                            padding: 12,
+                        },
+                    ]}
+                    onPress={handleSave}
                 >
                     <Text
                         style={[styles.photoButtonText, globalStyles.useFont]}
                     >
-                        Add photo
+                        Save contact
                     </Text>
                 </TouchableOpacity>
-            </View>
-
-            <View style={styles.field}>
-                <Text style={[styles.label, globalStyles.useFont]}>Name</Text>
-                <TextInput
-                    value={name}
-                    onChangeText={setName}
-                    placeholder="Name"
-                    style={styles.input}
-                />
-            </View>
-
-            <View style={styles.field}>
-                <Text style={[styles.label, globalStyles.useFont]}>
-                    Phone number
-                </Text>
-                <TextInput
-                    value={phone}
-                    onChangeText={setPhone}
-                    placeholder="Phone"
-                    keyboardType="phone-pad"
-                    style={styles.input}
-                />
-            </View>
-
-            <TouchableOpacity
-                style={[
-                    globalStyles.button,
-                    {
-                        width: '50%',
-                        alignSelf: 'center',
-                        alignItems: 'center',
-                        padding: 12,
-                    },
-                ]}
-                onPress={handleSave}
-            >
-                <Text style={[styles.photoButtonText, globalStyles.useFont]}>
-                    Save contact
-                </Text>
-            </TouchableOpacity>
-        </ScrollView>
+            </ScrollView>
+        </KeyboardAvoidingView>
     );
 };
 

@@ -27,6 +27,8 @@ export default function Index() {
 
     let filteredContacts: FileContact[] | any;
 
+    SplashScreen.preventAutoHideAsync();
+
     useEffect(() => {
         if (loaded) {
             SplashScreen.hideAsync();
