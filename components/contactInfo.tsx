@@ -86,12 +86,6 @@ const styles = StyleSheet.create({
         marginTop: 16,
         marginBottom: 4,
     },
-    input: {
-        fontSize: 18,
-        paddingVertical: 8,
-        borderBottomWidth: StyleSheet.hairlineWidth,
-        borderBottomColor: '#ccc',
-    },
 });
 
 export default ContactInfo;
