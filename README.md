@@ -22,7 +22,7 @@ The Contactor is a TypeScript-based mobile application built with Expo, designed
 
 ### Navigate to project directory
 
-`cd Toodler`
+`cd The_Contractor`
 
 ### Install dependencies
 
@@ -54,7 +54,14 @@ The Contactor is a TypeScript-based mobile application built with Expo, designed
 
 ### Platform-Specific Features
 
-- None
+The application integrates multiple native platform-dependent features:
+
+1. **Camera Access** – Capture contact photos using the device camera (iOS/Android).
+2. **Photo Library Access** – Select images from the system gallery.
+3. **File System Storage** – Read/write JSON contact files using `expo-file-system` in platform-specific directories.
+4. **Phone Dialing** – Open the system dialer using `Linking.openURL('tel:')`.
+5. **Keyboard-Aware Layout** – Adapts UI behavior on iOS vs Android using `KeyboardAvoidingView`.
+
 
 ## Setup Instructions
 
