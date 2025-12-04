@@ -211,6 +211,7 @@ export default function UserDetailScreen() {
                                             padding: 8,
                                         },
                                     ]}
+                                    onPress={handleAddPhoto}
                                 >
                                     <Text
                                         style={[

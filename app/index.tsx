@@ -5,9 +5,7 @@ import GetContacts from '@/util/getContacts';
 import globalStyles from '@/util/globalStyles';
 import { useData } from '@/util/useData';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useFonts } from 'expo-font';
 import { useRouter } from 'expo-router';
-import * as SplashScreen from 'expo-splash-screen';
 import React, { useEffect, useState } from 'react';
 import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import * as file from '../util/fileManager';
@@ -20,19 +18,17 @@ export default function Index() {
     const [isLoading, setIsLoading] = useState(true);
     const { contacts, setContacts } = useData();
 
-    const [loaded] = useFonts({
-        'RobotoMono-Regular': require('@/assets/fonts/RobotoMono-Regular.ttf'),
-        'RobotoMono-Bold': require('@/assets/fonts/RobotoMono-Bold.ttf'),
-    });
+    // const [loaded] = useFonts({
+    //     'RobotoMono-Regular': require('@/assets/fonts/RobotoMono-Regular.ttf'),
+    //     'RobotoMono-Bold': require('@/assets/fonts/RobotoMono-Bold.ttf'),
+    // });
 
     let filteredContacts: FileContact[] | any;
 
-    SplashScreen.preventAutoHideAsync();
-
     useEffect(() => {
-        if (loaded) {
-            SplashScreen.hideAsync();
-        }
+        // if (loaded) {
+        //     SplashScreen.hideAsync().catch(() => {});
+        // }
         const init = async () => {
             try {
                 const importedFlag = await AsyncStorage.getItem(
@@ -40,6 +36,7 @@ export default function Index() {
                 );
 
                 if (!importedFlag) {
+                    console.log(contacts?.length === 0);
                     if (contacts?.length === 0) {
                         const oldContacts = await GetContacts();
                         for (const c of oldContacts) {
@@ -62,7 +59,7 @@ export default function Index() {
         };
 
         init();
-    }, [setContacts, loaded, contacts]);
+    }, [setContacts, contacts]);
 
     if (!contacts) {
         filteredContacts = [];

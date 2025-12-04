@@ -1,50 +1,81 @@
-# Welcome to your Expo app 👋
+# Project Name
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+- The_Contactor
 
-## Get started
+## Description
 
-1. Install dependencies
+The Contactor is a TypeScript-based mobile application built with Expo, designed as a full replacement for the missing native Contacts app on iOS and Android. The app enables users to manage their personal contacts through an intuitive interface while adhering to clean architecture principles and modular code structure.
 
-   ```bash
-   npm install
-   ```
+## Table of Contents
 
-2. Start the app
+- Installation
+- Features
+- Technologies Used
+- Platform Support
+- Project Structure
+- Setup Instructions
+- Running the App
+- Testing
+- Screenshots
+- Known Issues
+- Future Improvements
 
-   ```bash
-   npx expo start
-   ```
+### Navigate to project directory
 
-In the output, you'll find options to open the app in a
+`cd Toodler`
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+### Install dependencies
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+`npm install`
 
-## Get a fresh project
+### Running the App
 
-When you're ready, run:
+`npm run`
 
-```bash
-npm run reset-project
-```
+## Technologies Used
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+- React Native
+- Expo
+- Expo File System (expo-file-system)
+- React Navigation
+- Custom State Management / Data Utility (Util)
+- Custom file Manager (Util)
 
-## Learn more
+## Platform Support
 
-To learn more about developing your project with Expo, look at the following resources:
+- iOS
+- Android
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+### Primary Development Platform
 
-## Join the community
+- Primary Platform: iOS / Android
+- Test Devices: iPhone 14, iPhone 16e, iPhone SE, Samsung s22, Pixel 5, iPhone 16 Pro Max
+- OS Version: iOS 16.1, Windows 11.
 
-Join our community of developers creating universal apps.
+### Platform-Specific Features
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+- None
+
+## Setup Instructions
+
+- Clone the repository: `git clone https://github.com/Wowa-penguin/T-488-MAPP_Assignment_II.git`
+
+### Prerequisites
+
+- Node.js (v14 or higher)
+- npm or yarn
+- React Native CLI
+- Xcode (for iOS development)
+- Android Studio (for Android development)
+- Expo Go app (for local development)
+
+### Environment Setup
+
+1. Install React Native dependencies
+2. Configure development environment
+3. Set up emulators/simulators
+
+## Known Issues
+
+- All core features are functioning as expected, and no critical bugs have been encountered during testing.
+- There is an expo warn when a picture is selected ([expo-image-picker] `ImagePicker.MediaTypeOptions` have been deprecated. Use `ImagePicker.MediaType` or an array of `ImagePicker.MediaType` instead)
