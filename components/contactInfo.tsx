@@ -42,7 +42,7 @@ const ContactInfo = ({ name, phone, photoUri }: ContactInfoProp) => {
                 <Text
                     style={[
                         { fontSize: 30, fontWeight: 'bold' },
-                        globalStyles.useFont,
+                        globalStyles.useFontBold,
                     ]}
                 >
                     {name}

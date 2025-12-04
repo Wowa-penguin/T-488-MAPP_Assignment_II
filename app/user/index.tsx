@@ -215,7 +215,11 @@ export default function UserDetailScreen() {
                                     <Text
                                         style={[
                                             globalStyles.useFont,
-                                            { fontSize: 16, color: '#fff', textAlign: 'center' },
+                                            {
+                                                fontSize: 16,
+                                                color: '#fff',
+                                                textAlign: 'center',
+                                            },
                                         ]}
                                     >
                                         Change Photo
