@@ -18,17 +18,9 @@ export default function Index() {
     const [isLoading, setIsLoading] = useState(true);
     const { contacts, setContacts } = useData();
 
-    // const [loaded] = useFonts({
-    //     'RobotoMono-Regular': require('@/assets/fonts/RobotoMono-Regular.ttf'),
-    //     'RobotoMono-Bold': require('@/assets/fonts/RobotoMono-Bold.ttf'),
-    // });
-
     let filteredContacts: FileContact[] | any;
 
     useEffect(() => {
-        // if (loaded) {
-        //     SplashScreen.hideAsync().catch(() => {});
-        // }
         const init = async () => {
             try {
                 const importedFlag = await AsyncStorage.getItem(
