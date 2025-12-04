@@ -9,7 +9,7 @@ import { useFonts } from 'expo-font';
 import { useRouter } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import * as file from '../util/fileManager';
 
 const CONTACTS_IMPORTED_KEY = 'CONTACTS_IMPORTED_V1';
@@ -49,8 +49,11 @@ export default function Index() {
                 }
                 const allUsers = await file.getAllContacts();
                 setContacts(allUsers);
-            } catch (err) {
-                console.error(err);
+            } catch {
+                Alert.alert(
+                    'Error',
+                    'Could not find contacts or no contacts accessible'
+                );
             } finally {
                 setIsLoading(false);
             }
