@@ -38,7 +38,7 @@ export default function Index() {
                 );
 
                 if (!importedFlag) {
-                    if (!contacts) {
+                    if (contacts?.length === 0) {
                         const oldContacts = await GetContacts();
                         for (const c of oldContacts) {
                             file.createContactFile(c.name, c.phone, c.photo);
