@@ -4,7 +4,6 @@ import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import {
     Alert,
-    Button,
     Image,
     ScrollView,
     StyleSheet,
@@ -158,18 +157,22 @@ const Index = () => {
                 />
             </View>
 
-            <View
+            <TouchableOpacity
                 style={[
                     globalStyles.button,
-                    { width: '60%', alignSelf: 'center' },
+                    {
+                        width: '50%',
+                        alignSelf: 'center',
+                        alignItems: 'center',
+                        padding: 12,
+                    },
                 ]}
+                onPress={handleSave}
             >
-                <Button
-                    title="Save contact"
-                    color={'#fff'}
-                    onPress={handleSave}
-                />
-            </View>
+                <Text style={[styles.photoButtonText, globalStyles.useFont]}>
+                    Save contact
+                </Text>
+            </TouchableOpacity>
         </ScrollView>
     );
 };
