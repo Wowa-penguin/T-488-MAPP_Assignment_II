@@ -6,6 +6,7 @@ import {
     Alert,
     Button,
     Image,
+    ScrollView,
     StyleSheet,
     Text,
     TextInput,
@@ -87,7 +88,7 @@ const Index = () => {
     };
 
     return (
-        <View style={styles.container}>
+        <ScrollView style={styles.container}>
             <TouchableOpacity
                 style={[
                     globalStyles.button,
@@ -169,7 +170,7 @@ const Index = () => {
                     onPress={handleSave}
                 />
             </View>
-        </View>
+        </ScrollView>
     );
 };
 
