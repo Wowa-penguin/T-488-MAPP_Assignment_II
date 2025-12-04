@@ -19,6 +19,7 @@ export default function Index() {
     const [search, setSearch] = useState('');
     const [isLoading, setIsLoading] = useState(true);
     const { contacts, setContacts } = useData();
+
     const [loaded] = useFonts({
         'RobotoMono-Regular': require('@/assets/fonts/RobotoMono-Regular.ttf'),
         'RobotoMono-Bold': require('@/assets/fonts/RobotoMono-Bold.ttf'),
@@ -37,11 +38,13 @@ export default function Index() {
                 );
 
                 if (!importedFlag) {
-                    const oldContacts = await GetContacts();
-
-                    for (const c of oldContacts) {
-                        file.createContactFile(c.name, c.phone, c.photo);
+                    if (!contacts) {
+                        const oldContacts = await GetContacts();
+                        for (const c of oldContacts) {
+                            file.createContactFile(c.name, c.phone, c.photo);
+                        }
                     }
+
                     await AsyncStorage.setItem(CONTACTS_IMPORTED_KEY, 'true');
                 }
                 const allUsers = await file.getAllContacts();
@@ -54,11 +57,7 @@ export default function Index() {
         };
 
         init();
-    }, [setContacts, loaded]);
-
-    if (!loaded) {
-        return null;
-    }
+    }, [setContacts, loaded, contacts]);
 
     if (!contacts) {
         filteredContacts = [];
