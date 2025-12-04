@@ -207,7 +207,6 @@ export default function UserDetailScreen() {
                                         globalStyles.button,
                                         {
                                             width: '40%',
-                                            alignItems: 'center',
                                             padding: 8,
                                         },
                                     ]}
@@ -216,7 +215,7 @@ export default function UserDetailScreen() {
                                     <Text
                                         style={[
                                             globalStyles.useFont,
-                                            { fontSize: 16, color: '#fff' },
+                                            { fontSize: 16, color: '#fff', textAlign: 'center' },
                                         ]}
                                     >
                                         Change Photo

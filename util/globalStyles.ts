@@ -32,6 +32,9 @@ export default StyleSheet.create({
         borderRadius: 45,
         borderColor: '#707070ff',
         backgroundColor: '#b4b4b4ff',
+        justifyContent: 'center',
+        alignItems: 'center',
+
     },
     useFont: {
         fontFamily: 'RobotoMono-Regular',
