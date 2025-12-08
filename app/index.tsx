@@ -28,13 +28,13 @@ export default function Index() {
                 );
 
                 if (!importedFlag) {
-                    console.log(contacts?.length === 0);
-                    if (contacts?.length === 0) {
-                        const oldContacts = await GetContacts();
-                        for (const c of oldContacts) {
-                            file.createContactFile(c.name, c.phone, c.photo);
-                        }
+                    //! console.log(contacts?.length === 0);
+                    //! if (contacts?.length === 0) {
+                    const oldContacts = await GetContacts();
+                    for (const c of oldContacts) {
+                        file.createContactFile(c.name, c.phone, c.photo);
                     }
+                    //! }
 
                     await AsyncStorage.setItem(CONTACTS_IMPORTED_KEY, 'true');
                 }
